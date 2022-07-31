@@ -88,6 +88,21 @@ func OutputHTMLFromMarkdown(filename, title string) string {
 	return html
 }
 
+func License() string {
+	license, err := ioutil.ReadFile("LICENSE")
+	if err != nil {
+		fmt.Printf("Error reading license: %s", err)
+		return ""
+	}
+	return `<div><a href="#show">show</a>
+    <div id="show">
+        <div id="hide"><pre><code>` + string(license) + `</pre></code>
+	<a href="#hide">hide</a>
+        </div>
+    </div>
+	</div>`
+}
+
 func Snowflake() string {
 	return "	<iframe src=\"https://snowflake.torproject.org/embed.html\" width=\"320\" height=\"240\" frameborder=\"0\" scrolling=\"no\"></iframe>"
 }

@@ -55,7 +55,6 @@ code {
     border-radius: 5%;
     padding: 1%;
     border-color: darkgray;
-    border-style: dotted;
     font-size: .9em;
 }
 
