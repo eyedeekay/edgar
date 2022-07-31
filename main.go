@@ -123,23 +123,30 @@ func runGenerator(file, out string) {
 			fmt.Printf("Output Error %s", err)
 			os.Exit(1)
 		}
-		gitAddCmd := exec.Command("git", "add", *outfile, ".nojekyll")
-		if err := gitAddCmd.Run(); err != nil {
-			fmt.Printf("Git Add Error: %s", err)
-			os.Exit(1)
-		}
-		gitCommitCmd := exec.Command("git", "commit", "-am", "update "+*outfile)
-		if out, err := gitCommitCmd.Output(); err != nil {
-			fmt.Printf("Git Commit Error: %s %s", out, err)
-			os.Exit(1)
-		}
-		if err := enableGithubPage(); err != nil {
-			if strings.Contains(err.Error(), "409") {
-				fmt.Println("Page already exists, skipping")
-			} else if strings.Contains(err.Error(), "GITHUB_TOKEN not set") {
-				fmt.Println("GITHUB_TOKEN not set, skipping")
-			} else {
-				fmt.Printf("Github Pages Error: %s", err)
+		// determine if git is installled
+		cmd := exec.Command("git", "--version")
+		_, err := cmd.Output()
+		if err != nil {
+			fmt.Printf("Git not installed \n %s", err)
+		} else {
+			gitAddCmd := exec.Command("git", "add", *outfile, ".nojekyll")
+			if err := gitAddCmd.Run(); err != nil {
+				fmt.Printf("Git Add Error: %s", err)
+				os.Exit(1)
+			}
+			gitCommitCmd := exec.Command("git", "commit", "-am", "update "+*outfile)
+			if out, err := gitCommitCmd.Output(); err != nil {
+				fmt.Printf("Git Commit Error: %s %s", out, err)
+				os.Exit(1)
+			}
+			if err := enableGithubPage(); err != nil {
+				if strings.Contains(err.Error(), "409") {
+					fmt.Println("Page already exists, skipping")
+				} else if strings.Contains(err.Error(), "GITHUB_TOKEN not set") {
+					fmt.Println("GITHUB_TOKEN not set, skipping")
+				} else {
+					fmt.Printf("Github Pages Error: %s", err)
+				}
 			}
 		}
 	} else {
