@@ -11,6 +11,7 @@ import (
 
 	"github.com/eyedeekay/edgar/tohtml"
 	github "github.com/google/go-github/v45/github"
+	"github.com/yosssi/gohtml"
 	"golang.org/x/oauth2"
 )
 
@@ -71,7 +72,7 @@ func main() {
 	output += tohtml.Snowflake()
 	output += tohtml.OutputBodyClose()
 	output += tohtml.OutputHTMLClose()
-	//output = gohtml.Format(output)
+	output = gohtml.Format(output)
 	err := ioutil.WriteFile(".nojekyll", []byte{}, 0644)
 	if err != nil {
 		fmt.Printf("78 \n %s", err)

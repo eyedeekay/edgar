@@ -114,5 +114,5 @@ func OutputBodyClose() string {
 }
 
 func OutputHTMLClose() string {
-	return "	</html>" + "\n"
+	return "</html>" + "\n"
 }
