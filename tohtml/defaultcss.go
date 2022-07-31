@@ -141,4 +141,8 @@ input {
     padding-top: 1%;
     padding-bottom: 1%;
 }
+#show {display:none ; }
+#hide {display:block;}
+#show:target {display: block; }
+#hide:target {display: none; }
 `
