@@ -94,6 +94,7 @@ func main() {
 }
 
 func runGenerator(file, out string) {
+	fmt.Println("Converting", file, "to", out)
 	output := tohtml.OutputHTMLOpen()
 	output += tohtml.OutputHeaderOpen()
 	output += tohtml.OutputTitleTag(*title)
