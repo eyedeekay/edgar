@@ -77,7 +77,7 @@ func main() {
 	filesList := strings.Split(*filename, ",")
 	if *title == "" {
 		var err error
-		*title, err = tohtml.ReadFirstMarkdownHeader("README.md")
+		*title, err = tohtml.ReadFirstMarkdownHeader(filesList[0])
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
