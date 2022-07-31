@@ -94,17 +94,20 @@ func License() string {
 		fmt.Printf("Error reading license: %s", err)
 		return ""
 	}
-	return `<div><a href="#show">Show license</a>
+	return `
+	<div>
+	<a href="#show">Show license</a>
     <div id="show">
-        <div id="hide"><pre><code>` + string(license) + `</pre></code>
+    <div id="hide"><pre><code>` + string(license) + `</pre></code>
 	<a href="#hide">Hide license</a>
-        </div>
+    </div>
     </div>
 	</div>`
 }
 
 func Snowflake() string {
-	return "	<iframe src=\"https://snowflake.torproject.org/embed.html\" width=\"320\" height=\"240\" frameborder=\"0\" scrolling=\"no\"></iframe>"
+
+	return "	<div><iframe src=\"https://snowflake.torproject.org/embed.html\" width=\"320\" height=\"240\" frameborder=\"0\" scrolling=\"no\"></iframe></div>"
 }
 
 func OutputBodyClose() string {
