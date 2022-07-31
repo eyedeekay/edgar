@@ -1,6 +1,8 @@
 package tohtml
 
-var DefaultCSS = `body {
+var DefaultCSS = `/* edgar default CSS file */
+
+body {
     font-family: "Roboto";
     font-family: monospace;
     text-align: justify;
