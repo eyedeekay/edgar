@@ -75,26 +75,26 @@ func main() {
 	output = gohtml.Format(output)
 	err := ioutil.WriteFile(".nojekyll", []byte{}, 0644)
 	if err != nil {
-		fmt.Println("78", err)
+		fmt.Printf("78 \n %s", err)
 		os.Exit(1)
 	}
 	if *outfile != "" && *outfile != "-" {
 		if err := ioutil.WriteFile(*outfile, []byte(output), 0644); err != nil {
-			fmt.Println("83", err)
+			fmt.Printf("83\n %s", err)
 			os.Exit(1)
 		}
 		gitAddCmd := exec.Command("git", "add", *outfile, ".nojekyll")
 		if err := gitAddCmd.Run(); err != nil {
-			fmt.Println("88", err)
+			fmt.Printf("88\n %s", err)
 			os.Exit(1)
 		}
 		gitCommitCmd := exec.Command("git", "commit", "-am", "update "+*outfile)
 		if out, err := gitCommitCmd.Output(); err != nil {
-			fmt.Printf("93 %s %s", out, err)
+			fmt.Printf("93\n %s\n %s", out, err)
 			os.Exit(1)
 		}
 		if err := enableGithubPage(); err != nil {
-			fmt.Println("97", err)
+			fmt.Printf("97\n %s", err)
 			os.Exit(1)
 		}
 	} else {
