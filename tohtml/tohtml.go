@@ -111,7 +111,7 @@ func License() string {
 			return ""
 		}
 	}
-	license, err := ioutil.ReadFile("LICENSE")
+	license, err := ioutil.ReadFile(licensePath)
 	if err != nil {
 		fmt.Printf("Error reading license: %s", err)
 		return ""
