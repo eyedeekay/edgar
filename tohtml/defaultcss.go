@@ -141,13 +141,13 @@ input {
     padding-top: 1%;
     padding-bottom: 1%;
 }
-#show {display:none ; }
-#hide {display:block;}
+#show {display:none; }
+#hide {display:block; }
 #show:target {display: block; }
 #hide:target {display: none; }
 
-#shownav {display:none ; }
-#hidenav {display:block;}
+#shownav {display:none; }
+#hidenav {display:block; }
 #shownav:target {display: block; }
 #hidenav:target {display: none; }
 `

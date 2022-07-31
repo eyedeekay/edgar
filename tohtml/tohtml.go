@@ -121,7 +121,6 @@ func NavigationBar(files []string) string {
 	navbar += "</div>"
 	navbar += "</div>"
 	navbar += "</div>\n"
-	navbar += "</div>"
 	return navbar
 }
 
