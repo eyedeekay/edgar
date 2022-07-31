@@ -104,6 +104,13 @@ func OutputHTMLFromMarkdown(filename, title string) string {
 }
 
 func License() string {
+	licensePath := "LICENSE"
+	if _, err := os.Stat(licensePath); err != nil {
+		licensePath = "LICENSE.md"
+		if _, err := os.Stat(licensePath); err != nil {
+			return ""
+		}
+	}
 	license, err := ioutil.ReadFile("LICENSE")
 	if err != nil {
 		fmt.Printf("Error reading license: %s", err)
