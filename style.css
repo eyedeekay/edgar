@@ -1,6 +1,4 @@
-package tohtml
-
-var DefaultCSS = `body {
+body {
     font-family: "Roboto";
     font-family: monospace;
     text-align: justify;
@@ -142,4 +140,3 @@ input {
     padding-top: 1%;
     padding-bottom: 1%;
 }
-`

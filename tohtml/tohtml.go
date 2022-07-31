@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
 )
 
@@ -32,47 +33,69 @@ func ReadFirstMarkdownHeader(fileName string) (string, error) {
 }
 
 func OutputHTMLOpen() string {
-	return "<html>"
+	return "<html>" + "\n"
 }
 
 func OutputHeaderOpen() string {
-	return "<head>"
+	return "	<head>" + "\n"
 }
 
 func OutputTitleTag(title string) string {
-	return "<title>" + title + "</title>"
+	return "		<title>" + strings.TrimRight(strings.TrimLeft(title, "'"), "'") + "</title>" + "\n"
 }
 
 func OutputMetaTag(name, content string) string {
-	return "<meta name=\"" + name + "\" content=\"" + content + "\" />"
+	return "		<meta name=\"" + name + "\" content=\"" + content + "\" />" + "\n"
 }
 
 func OutputCSSTag(cssFile string) string {
 	if _, err := os.Stat(cssFile); err != nil {
 		err := ioutil.WriteFile(cssFile, []byte(DefaultCSS), 0644)
 		if err != nil {
-			fmt.Errorf("Error writing default CSS file: %s", err)
+			fmt.Printf("Error writing default CSS file: %s", err)
 		}
 	}
-	return "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />"
+	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
 }
 
 func OutputScriptTag(scriptFile string) string {
-	return "<script type=\"text/javascript\" src=\"" + scriptFile + "\"></script>"
+	return "		<script type=\"text/javascript\" src=\"" + scriptFile + "\"></script>" + "\n"
 }
 
 func OutputHeaderClose() string {
-	return "</head>"
+	return "	</head>" + "\n"
 }
 
 func OutputBodyOpen() string {
-	return "<body>"
+	return "<body>" + "\n"
+}
+
+func outputHTMLFromMarkdown(filename string) string {
+	bytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Printf("Error reading file: %s", err)
+		panic(err)
+	}
+	unsafe := blackfriday.Run(bytes)
+	html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+	return string(html) + "\n"
+}
+
+func OutputHTMLFromMarkdown(filename, title string) string {
+	html := outputHTMLFromMarkdown(filename)
+	title = strings.TrimRight(strings.TrimLeft(title, "'"), "'")
+	html = strings.Replace(html, title, "<a href=\"/\">"+title+"</a>", 1)
+	return html
+}
+
+func Snowflake() string {
+	return "	<iframe src=\"https://snowflake.torproject.org/embed.html\" width=\"320\" height=\"240\" frameborder=\"0\" scrolling=\"no\"></iframe>"
 }
 
 func OutputBodyClose() string {
-	return "</body>"
+	return "	</body>" + "\n"
 }
 
 func OutputHTMLClose() string {
-	return "</html>"
+	return "	</html>" + "\n"
 }
