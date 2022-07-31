@@ -153,6 +153,10 @@ func Snowflake() string {
 	return "	<div><iframe src=\"https://snowflake.torproject.org/embed.html\" width=\"320\" height=\"240\" frameborder=\"0\" scrolling=\"no\"></iframe></div>\n"
 }
 
+func I2PLink() string {
+	return "	<div><a href=\"https://geti2p.net/\">I2P</a></div>\n"
+}
+
 func OutputBodyClose() string {
 	return "	</body>" + "\n"
 }

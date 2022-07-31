@@ -24,6 +24,7 @@ var (
 	title     = flag.String("title", "", "The title of the HTML file, if blank it will be generated from the first h1 in the markdown file.")
 	outfile   = flag.String("out", "index.html", "The name of the output file(Only used for the first file, others will be named `inputfile.html`)")
 	snowflake = flag.Bool("snowflake", true, "add a snowflake to the page footer")
+	i2plink   = flag.Bool("i2plink", true, "add an i2p link to the page footer")
 )
 
 func listAllMarkdownFiles() string {
@@ -103,13 +104,20 @@ func runGenerator(file, out string) {
 	output += tohtml.OutputMetaTag("description", findGithubRepoName())
 	output += tohtml.OutputMetaTag("keywords", getCurrentBranch())
 	output += tohtml.OutputCSSTag(*css)
-	output += tohtml.OutputScriptTag(*script)
+	if *script != "" {
+		output += tohtml.OutputScriptTag(*script)
+	}
 	output += tohtml.OutputHeaderClose()
 	output += tohtml.OutputBodyOpen()
 	output += tohtml.NavigationBar(filesList)
 	output += tohtml.OutputHTMLFromMarkdown(file, *title)
 	output += tohtml.License()
-	output += tohtml.Snowflake()
+	if *snowflake {
+		output += tohtml.Snowflake()
+	}
+	if *i2plink {
+		output += tohtml.I2PLink()
+	}
 	output += tohtml.OutputBodyClose()
 	output += tohtml.OutputHTMLClose()
 	final := gohtml.Format(output)
