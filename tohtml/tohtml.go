@@ -120,7 +120,8 @@ func NavigationBar(files []string) string {
 		}
 		navbar += "<li><a href=\"" + title + ".html" + "\">" + title + "</a></li>"
 	}
-	navbar += "<ul>"
+	navbar += "</ul>"
+	navbar += "<br>"
 	navbar += "<a href=\"#hidenav\">Hide Navigation</a>"
 	navbar += "</div>"
 	navbar += "</div>"
