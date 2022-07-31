@@ -112,7 +112,10 @@ func NavigationBar(files []string) string {
 	navbar += "<div id=\"hidenav\">"
 	for _, file := range files {
 		title := strings.Split(file, ".")[0]
-		navbar += "<a href=\"/" + title + ".html" + "\">" + title + "</a>"
+		if title == "README" {
+			title = "index"
+		}
+		navbar += "<a href=\"" + title + ".html" + "\">" + title + "</a>"
 	}
 	navbar += "<a href=\"#hidenav\">Hide Navigation</a>"
 	navbar += "</div>"
