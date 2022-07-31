@@ -107,7 +107,7 @@ func License() string {
 
 func NavigationBar(files []string) string {
 	navbar := "<div>"
-	navbar += "<a href=\"#shownav\">Show license</a>"
+	navbar += "<a href=\"#shownav\">Show navigation</a>"
 	navbar += "<div id=\"shownav\">"
 	navbar += "<div id=\"hidenav\">"
 	for _, file := range files {
@@ -115,7 +115,7 @@ func NavigationBar(files []string) string {
 		if title == "README" {
 			title = "index"
 		}
-		navbar += "<a href=\"" + title + ".html" + "\">" + title + "</a>"
+		navbar += "<a href=\"" + title + ".html" + "\">" + title + "</a><br>"
 	}
 	navbar += "<a href=\"#hidenav\">Hide Navigation</a>"
 	navbar += "</div>"
