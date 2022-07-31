@@ -1,30 +1,58 @@
 <html>
-  <head>
-    <title>
-      edgar
-    </title>
-    <meta name="author" content="eyedeekay" />
-    <meta name="description" content="edgar" />
-    <meta name="keywords" content="main" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script type="text/javascript" src="script.js"></script>
-  </head>
-  <body>
-    <h1>
-      Usage of ./
-      <a href="/">
-        edgar
+<head>
+  <title>
+    edgar
+  </title>
+  <meta name="author" content="eyedeekay" />
+  <meta name="description" content="edgar" />
+  <meta name="keywords" content="main" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+<div>
+  <a href="#shownav">
+    Show license
+  </a>
+  <div id="shownav">
+    <div id="hidenav">
+      <a href="/README.html">
+        README
       </a>
-      :
-    </h1>
-    <pre><code>  -author string
-    	The author of the HTML file (default &#34;eyedeekay&#34;)
+      <a href="/USAGE.html">
+        USAGE
+      </a>
+      <a href="#hidenav">
+        Hide Navigation
+      </a>
+    </div>
+  </div>
+</div>
+<h1>
+  <a href="/">
+    edgar
+  </a>
+</h1>
+<p>
+  generates a homepage for anything with a readme. A replacement for my endless makefile nonsense.
+  This tool is intended to create pages for projects which are based on the README.md file, and
+  I hope it’s particularly useful for github pages.
+</p>
+<p>
+  Basically, a really simple static site generator that take a single markdown file and emits
+  reasonable-looking HTML page for it.
+</p>
+<h2>
+  Usage
+</h2><pre><code># Usage of ./edgar:
+  -author string
+    	The author of the HTML file (default is your git namespace)
   -css string
     	The CSS file to use, a default will be generated if one doesn&#39;t exist (default &#34;style.css&#34;)
   -filename string
-    	The markdown file to convert to HTML, or a comma separated list of files (default &#34;README.md,USAGE.md&#34;)
-  -out inputfile.html
-    	The name of the output file(Only used for the first file, others will be named inputfile.html) (default &#34;index.html&#34;)
+    	The markdown file to convert to HTML (default &#34;README.md&#34;)
+  -out string
+    	The name of the output file (default &#34;index.html&#34;)
   -script string
     	The script file to use (default &#34;script.js&#34;)
   -snowflake
@@ -32,13 +60,13 @@
   -title string
     	The title of the HTML file
 </code></pre>
-    <div>
-      <a href="#show">
-        Show license
-      </a>
-      <div id="show">
-        <div id="hide">
-          <pre><code>MIT License
+<div>
+  <a href="#show">
+    Show license
+  </a>
+  <div id="show">
+    <div id="hide">
+      <pre><code>MIT License
 
 Copyright (c) 2022 idk
 
@@ -60,14 +88,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </code></pre>
-          <a href="#hide">
-            Hide license
-          </a>
-        </div>
-      </div>
+      <a href="#hide">
+        Hide license
+      </a>
     </div>
-    <div>
-      <iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
-    </div>
-  </body>
-</html>
+  </div>
+</div>
+<div>
+  <iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
+</div>

@@ -95,6 +95,7 @@ func main() {
 
 func runGenerator(file, out string) {
 	fmt.Println("Converting", file, "to", out)
+	filesList := strings.Split(*filename, ",")
 	output := tohtml.OutputHTMLOpen()
 	output += tohtml.OutputHeaderOpen()
 	output += tohtml.OutputTitleTag(*title)
@@ -105,6 +106,7 @@ func runGenerator(file, out string) {
 	output += tohtml.OutputScriptTag(*script)
 	output += tohtml.OutputHeaderClose()
 	output += tohtml.OutputBodyOpen()
+	output += tohtml.NavigationBar(filesList)
 	output += tohtml.OutputHTMLFromMarkdown(file, *title)
 	output += tohtml.License()
 	output += tohtml.Snowflake()
