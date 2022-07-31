@@ -11,7 +11,7 @@ Usage
 ```md
 # Usage of ./edgar:
   -author string
-    	The author of the HTML file (default "hankhill19580")
+    	The author of the HTML file (default is your git namespace)
   -css string
     	The CSS file to use, a default will be generated if one doesn't exist (default "style.css")
   -filename string
