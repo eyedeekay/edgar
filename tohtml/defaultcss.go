@@ -153,5 +153,8 @@ input {
 #shownav:target {display: block; }
 #hidenav:target {display: none; }
 
-#navbar {float: right;}
+#navbar {
+	float: right;
+	width: 10%;
+}
 `
