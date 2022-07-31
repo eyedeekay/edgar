@@ -108,7 +108,7 @@ func License() string {
 }
 
 func NavigationBar(files []string) string {
-	navbar := "<div>"
+	navbar := "<div id=\"navbar\">"
 	navbar += "<a href=\"#shownav\">Show navigation</a>"
 	navbar += "<div id=\"shownav\">"
 	navbar += "<div id=\"hidenav\">"
