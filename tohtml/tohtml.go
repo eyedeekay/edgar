@@ -94,15 +94,15 @@ func License() string {
 		fmt.Printf("Error reading license: %s", err)
 		return ""
 	}
-	return `
-	<div>
-	<a href="#show">Show license</a>
-    <div id="show">
-    <div id="hide"><pre><code>` + string(license) + `</pre></code>
-	<a href="#hide">Hide license</a>
-    </div>
-    </div>
-	</div>\n`
+	licensehtml := "<div>"
+	licensehtml += "<a href=\"#show\">Show license</a>"
+	licensehtml += "<div id=\"show\">"
+	licensehtml += "<div id=\"hide\"><pre><code>" + string(license) + "</pre></code>"
+	licensehtml += "<a href=\"#hide\">Hide license</a>"
+	licensehtml += "</div>"
+	licensehtml += "</div>"
+	licensehtml += "</div>\n"
+	return licensehtml
 }
 
 func Snowflake() string {
