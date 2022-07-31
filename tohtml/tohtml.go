@@ -97,7 +97,7 @@ func License() string {
 	licensehtml := "<div>"
 	licensehtml += "<a href=\"#show\">Show license</a>"
 	licensehtml += "<div id=\"show\">"
-	licensehtml += "<div id=\"hide\"><pre><code>" + string(license) + "</pre></code>"
+	licensehtml += "<div id=\"hide\"><pre><code>" + string(license) + "</code></pre>"
 	licensehtml += "<a href=\"#hide\">Hide license</a>"
 	licensehtml += "</div>"
 	licensehtml += "</div>"

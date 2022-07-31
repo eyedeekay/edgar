@@ -72,14 +72,14 @@ func main() {
 	output += tohtml.Snowflake()
 	output += tohtml.OutputBodyClose()
 	output += tohtml.OutputHTMLClose()
-	output = gohtml.Format(output)
+	final := gohtml.Format(output)
 	err := ioutil.WriteFile(".nojekyll", []byte{}, 0644)
 	if err != nil {
 		fmt.Printf("78 \n %s", err)
 		os.Exit(1)
 	}
 	if *outfile != "" && *outfile != "-" {
-		if err := ioutil.WriteFile(*outfile, []byte(output), 0644); err != nil {
+		if err := ioutil.WriteFile(*outfile, []byte(final), 0644); err != nil {
 			fmt.Printf("83\n %s", err)
 			os.Exit(1)
 		}
@@ -102,7 +102,7 @@ func main() {
 			os.Exit(1)
 		}
 	} else {
-		fmt.Println(output)
+		fmt.Println(final)
 	}
 }
 
