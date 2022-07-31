@@ -94,10 +94,10 @@ func License() string {
 		fmt.Printf("Error reading license: %s", err)
 		return ""
 	}
-	return `<div><a href="#show">show</a>
+	return `<div><a href="#show">Show license</a>
     <div id="show">
         <div id="hide"><pre><code>` + string(license) + `</pre></code>
-	<a href="#hide">hide</a>
+	<a href="#hide">Hide license</a>
         </div>
     </div>
 	</div>`
