@@ -118,8 +118,8 @@ func runGenerator(file, out string) {
 		fmt.Printf("No Jekyll Error \n %s", err)
 		os.Exit(1)
 	}
-	if *outfile != "" && *outfile != "-" {
-		if err := ioutil.WriteFile(*outfile, []byte(final), 0644); err != nil {
+	if out != "" && out != "-" {
+		if err := ioutil.WriteFile(out, []byte(final), 0644); err != nil {
 			fmt.Printf("Output Error %s", err)
 			os.Exit(1)
 		}
@@ -129,12 +129,12 @@ func runGenerator(file, out string) {
 		if err != nil {
 			fmt.Printf("Git not installed \n %s\n", err)
 		} else {
-			gitAddCmd := exec.Command("git", "add", *outfile, ".nojekyll")
+			gitAddCmd := exec.Command("git", "add", out, ".nojekyll")
 			if err := gitAddCmd.Run(); err != nil {
 				fmt.Printf("Git Add Error: %s", err)
 				os.Exit(1)
 			}
-			gitCommitCmd := exec.Command("git", "commit", "-am", "update "+*outfile)
+			gitCommitCmd := exec.Command("git", "commit", "-am", "update "+out)
 			if out, err := gitCommitCmd.Output(); err != nil {
 				fmt.Printf("Git Commit Error: %s %s", out, err)
 				os.Exit(1)
