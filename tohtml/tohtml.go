@@ -105,6 +105,16 @@ func License() string {
 	return licensehtml
 }
 
+func NavigationBar(files []string) string {
+	navbar := "<div class=\"navbar\">"
+	for _, file := range files {
+		title := strings.Split(file, ".")[0]
+		navbar += "<a href=\"/" + title + ".html" + "\">" + title + "</a>"
+	}
+	navbar += "</div>"
+	return navbar
+}
+
 func Snowflake() string {
 	return "	<div><iframe src=\"https://snowflake.torproject.org/embed.html\" width=\"320\" height=\"240\" frameborder=\"0\" scrolling=\"no\"></iframe></div>\n"
 }

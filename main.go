@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -16,14 +17,39 @@ import (
 )
 
 var (
-	filename  = flag.String("filename", "README.md", "The markdown file to convert to HTML")
+	filename  = flag.String("filename", listAllMarkdownFiles(), "The markdown file to convert to HTML, or a comma separated list of files")
 	author    = flag.String("author", authorDefault(), "The author of the HTML file")
 	css       = flag.String("css", "style.css", "The CSS file to use, a default will be generated if one doesn't exist")
 	script    = flag.String("script", hasScript(), "The script file to use")
 	title     = flag.String("title", "", "The title of the HTML file")
-	outfile   = flag.String("out", "index.html", "The name of the output file")
+	outfile   = flag.String("out", "index.html", "The name of the output file(Only used for the first file, others will be named `inputfile.html`)")
 	snowflake = flag.Bool("snowflake", true, "add a snowflake to the page footer")
 )
+
+func listAllMarkdownFiles() string {
+	files, err := ioutil.ReadDir(".")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var fileList []string
+
+	if _, err := os.Stat("README.md"); err == nil {
+		fileList = append(fileList, "README.md")
+	}
+
+	for _, file := range files {
+		if !file.IsDir() {
+			if strings.HasSuffix(file.Name(), ".md") {
+				if file.Name() != "README.md" {
+					fileList = append(fileList, file.Name())
+				}
+			}
+		}
+	}
+
+	return strings.Join(fileList, ",")
+}
 
 func authorDefault() string {
 	user := findGithubUsername()
@@ -48,6 +74,7 @@ func hasScript() string {
 
 func main() {
 	flag.Parse()
+	filesList := strings.Split(*filename, ",")
 	if *title == "" {
 		var err error
 		*title, err = tohtml.ReadFirstMarkdownHeader("README.md")
@@ -56,7 +83,17 @@ func main() {
 			os.Exit(1)
 		}
 	}
+	for index, file := range filesList {
+		if index == 0 {
+			runGenerator(file, *outfile)
+		} else {
+			out := strings.Split(file, ".")[0] + ".html"
+			runGenerator(file, out)
+		}
+	}
+}
 
+func runGenerator(file, out string) {
 	output := tohtml.OutputHTMLOpen()
 	output += tohtml.OutputHeaderOpen()
 	output += tohtml.OutputTitleTag(*title)
@@ -67,7 +104,7 @@ func main() {
 	output += tohtml.OutputScriptTag(*script)
 	output += tohtml.OutputHeaderClose()
 	output += tohtml.OutputBodyOpen()
-	output += tohtml.OutputHTMLFromMarkdown(*filename, *title)
+	output += tohtml.OutputHTMLFromMarkdown(file, *title)
 	output += tohtml.License()
 	output += tohtml.Snowflake()
 	output += tohtml.OutputBodyClose()
@@ -75,22 +112,22 @@ func main() {
 	final := gohtml.Format(output)
 	err := ioutil.WriteFile(".nojekyll", []byte{}, 0644)
 	if err != nil {
-		fmt.Printf("78 \n %s", err)
+		fmt.Printf("No Jekyll Error \n %s", err)
 		os.Exit(1)
 	}
 	if *outfile != "" && *outfile != "-" {
 		if err := ioutil.WriteFile(*outfile, []byte(final), 0644); err != nil {
-			fmt.Printf("83\n %s", err)
+			fmt.Printf("Output Error %s", err)
 			os.Exit(1)
 		}
 		gitAddCmd := exec.Command("git", "add", *outfile, ".nojekyll")
 		if err := gitAddCmd.Run(); err != nil {
-			fmt.Printf("88\n %s", err)
+			fmt.Printf("Git Add Error: %s", err)
 			os.Exit(1)
 		}
 		gitCommitCmd := exec.Command("git", "commit", "-am", "update "+*outfile)
 		if out, err := gitCommitCmd.Output(); err != nil {
-			fmt.Printf("93\n %s\n %s", out, err)
+			fmt.Printf("Git Commit Error: %s %s", out, err)
 			os.Exit(1)
 		}
 		if err := enableGithubPage(); err != nil {
@@ -98,7 +135,7 @@ func main() {
 				fmt.Println("Page already exists, skipping")
 				os.Exit(0)
 			}
-			fmt.Printf("102\n %s", err)
+			fmt.Printf("Github Pages Error: %s", err)
 			os.Exit(1)
 		}
 	} else {
