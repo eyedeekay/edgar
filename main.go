@@ -127,7 +127,7 @@ func runGenerator(file, out string) {
 		cmd := exec.Command("git", "--version")
 		_, err := cmd.Output()
 		if err != nil {
-			fmt.Printf("Git not installed \n %s", err)
+			fmt.Printf("Git not installed \n %s\n", err)
 		} else {
 			gitAddCmd := exec.Command("git", "add", *outfile, ".nojekyll")
 			if err := gitAddCmd.Run(); err != nil {
