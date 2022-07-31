@@ -61,7 +61,7 @@ func OutputCSSTag(cssFile string) string {
 			fmt.Printf("Error reading CSS file: %s", err)
 		}
 		if strings.Contains(string(bytes), "/* edgar default CSS file */") {
-			fmt.Printf("CSS file already contains default CSS, updating it")
+			fmt.Printf("CSS file already contains default CSS, updating it\n")
 			err := ioutil.WriteFile(cssFile, []byte(DefaultCSS), 0644)
 			if err != nil {
 				fmt.Printf("Error writing default CSS file: %s", err)

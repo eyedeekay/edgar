@@ -136,6 +136,8 @@ func runGenerator(file, out string) {
 		if err := enableGithubPage(); err != nil {
 			if strings.Contains(err.Error(), "409") {
 				fmt.Println("Page already exists, skipping")
+			} else if strings.Contains(err.Error(), "GITHUB_TOKEN not set") {
+				fmt.Println("GITHUB_TOKEN not set, skipping")
 			} else {
 				fmt.Printf("Github Pages Error: %s", err)
 			}
