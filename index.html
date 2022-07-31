@@ -36,31 +36,16 @@
       </div>
     </div>
     <h1>
-      <a href="/">
-        edgar
-      </a>
+      Usage of ./edgar:
     </h1>
-    <p>
-      generates a homepage for anything with a readme. A replacement for my endless makefile nonsense.
-      This tool is intended to create pages for projects which are based on the README.md file, and
-      I hope it’s particularly useful for github pages.
-    </p>
-    <p>
-      Basically, a really simple static site generator that take a single markdown file and emits
-      reasonable-looking HTML page for it.
-    </p>
-    <h2>
-      Usage
-    </h2>
-    <pre><code># Usage of ./edgar:
-  -author string
-    	The author of the HTML file (default is your git namespace)
+    <pre><code>  -author string
+    	The author of the HTML file (default &#34;eyedeekay&#34;)
   -css string
     	The CSS file to use, a default will be generated if one doesn&#39;t exist (default &#34;style.css&#34;)
   -filename string
-    	The markdown file to convert to HTML (default &#34;README.md&#34;)
-  -out string
-    	The name of the output file (default &#34;index.html&#34;)
+    	The markdown file to convert to HTML, or a comma separated list of files (default &#34;README.md,USAGE.md&#34;)
+  -out inputfile.html
+    	The name of the output file(Only used for the first file, others will be named inputfile.html) (default &#34;index.html&#34;)
   -script string
     	The script file to use (default &#34;script.js&#34;)
   -snowflake
