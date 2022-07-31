@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/eyedeekay/edgar/tohtml"
-	"github.com/google/go-github/github"
+	github "github.com/google/go-github/v45/github"
 	"github.com/yosssi/gohtml"
 	"golang.org/x/oauth2"
 )
@@ -62,6 +62,7 @@ func main() {
 	output += tohtml.OutputTitleTag(*title)
 	output += tohtml.OutputMetaTag("author", *author)
 	output += tohtml.OutputMetaTag("description", findGithubRepoName())
+	output += tohtml.OutputMetaTag("keywords", getCurrentBranch())
 	output += tohtml.OutputCSSTag(*css)
 	output += tohtml.OutputScriptTag(*script)
 	output += tohtml.OutputHeaderClose()
@@ -72,23 +73,28 @@ func main() {
 	output += tohtml.OutputBodyClose()
 	output += tohtml.OutputHTMLClose()
 	output = gohtml.Format(output)
+	err := ioutil.WriteFile(".nojekyll", []byte{}, 0644)
+	if err != nil {
+		fmt.Println("78", err)
+		os.Exit(1)
+	}
 	if *outfile != "" && *outfile != "-" {
 		if err := ioutil.WriteFile(*outfile, []byte(output), 0644); err != nil {
-			fmt.Println(err)
+			fmt.Println("83", err)
 			os.Exit(1)
 		}
-		gitAddCmd := exec.Command("git", "add", *outfile)
+		gitAddCmd := exec.Command("git", "add", *outfile, ".nojekyll")
 		if err := gitAddCmd.Run(); err != nil {
-			fmt.Println(err)
+			fmt.Println("88", err)
 			os.Exit(1)
 		}
-		gitCommitCmd := exec.Command("git", "commit", "-m", "update "+*outfile)
-		if err := gitCommitCmd.Run(); err != nil {
-			fmt.Println(err)
+		gitCommitCmd := exec.Command("git", "commit", "-am", "update "+*outfile)
+		if out, err := gitCommitCmd.Output(); err != nil {
+			fmt.Printf("93 %s %s", out, err)
 			os.Exit(1)
 		}
 		if err := enableGithubPage(); err != nil {
-			fmt.Println(err)
+			fmt.Println("97", err)
 			os.Exit(1)
 		}
 	} else {
@@ -144,13 +150,27 @@ func enableGithubPage() error {
 	if repoName == "" {
 		return fmt.Errorf("could not find github repo name")
 	}
-	repo := github.Repository{
-		Name:     github.String(repoName),
-		HasPages: github.Bool(true),
-	}
-	_, _, err := client.Repositories.Edit(ctx, findGithubUsername(), repoName, &repo)
+	branch := getCurrentBranch()
+	path := "/"
+	_, _, err := client.Repositories.EnablePages(ctx, findGithubUsername(), repoName, &github.Pages{
+		Source: &github.PagesSource{
+			Branch: github.String(branch),
+			Path:   github.String(path),
+		},
+		Public: github.Bool(true),
+	})
 	if err != nil {
-		return err
+		return fmt.Errorf("could not enable github pages: %v", err)
 	}
+
 	return nil
+}
+
+func getCurrentBranch() string {
+	cmd := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD")
+	out, err := cmd.Output()
+	if err != nil {
+		return ""
+	}
+	return strings.Replace(string(out), "\n", "", -1)
 }
