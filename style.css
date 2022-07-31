@@ -34,7 +34,7 @@ img {
     float: left;
     top: 5%;
     left: 5%;
-    width: 22%;
+    max-width: 60%;
     display: inline;
 }
 
@@ -141,17 +141,40 @@ input {
     padding-top: 1%;
     padding-bottom: 1%;
 }
-#show {display:none; }
-#hide {display:block; }
-#show:target {display: block; }
-#hide:target {display: none; }
 
-#shownav {display:none; }
-#hidenav {display:block; }
-#shownav:target {display: block; }
-#hidenav:target {display: none; }
+#show {
+    display: none;
+}
+
+#hide {
+    display: block;
+}
+
+#show:target {
+    display: block;
+}
+
+#hide:target {
+    display: none;
+}
+
+#shownav {
+    display: none;
+}
+
+#hidenav {
+    display: block;
+}
+
+#shownav:target {
+    display: block;
+}
+
+#hidenav:target {
+    display: none;
+}
 
 #navbar {
-	float: right;
-	width: 10%;
+    float: right;
+    width: 10%;
 }

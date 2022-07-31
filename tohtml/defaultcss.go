@@ -36,7 +36,7 @@ img {
     float: left;
     top: 5%;
     left: 5%;
-    width: 22%;
+    max-width: 60%;
     display: inline;
 }
 
