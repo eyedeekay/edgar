@@ -94,11 +94,11 @@ func main() {
 			os.Exit(1)
 		}
 		if err := enableGithubPage(); err != nil {
-			fmt.Printf("97\n %s", err)
 			if strings.HasPrefix(err.Error(), "409") {
 				fmt.Println("Page already exists, skipping")
 				os.Exit(0)
 			}
+			fmt.Printf("102\n %s", err)
 			os.Exit(1)
 		}
 	} else {
