@@ -1,6 +1,7 @@
 package tohtml
 
 import (
+	"embed"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -153,8 +154,27 @@ func Snowflake() string {
 	return "	<div><iframe src=\"https://snowflake.torproject.org/embed.html\" width=\"320\" height=\"240\" frameborder=\"0\" scrolling=\"no\"></iframe></div>\n"
 }
 
+//go:embed I2Plogotoopiebanner.png
+var logo embed.FS
+
 func I2PLink() string {
-	return "	<div><a href=\"https://geti2p.net/\">I2P</a></div>\n"
+	file, err := logo.Open("I2Plogotoopiebanner.png")
+	if err != nil {
+		fmt.Printf("Error opening logo: %s", err)
+		return ""
+	}
+	defer file.Close()
+	// read the logo into a byte array
+	bytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Printf("Error reading logo: %s", err)
+		return ""
+	}
+	if err := ioutil.WriteFile("I2Plogotoopiebanner.png", bytes, 0644); err != nil {
+		fmt.Printf("Error writing logo: %s", err)
+		return ""
+	}
+	return "	<div><a href=\"https://geti2p.net/\"><img src=\"I2PLogotoopiebanner.png\"></img>I2P</a></div>\n"
 }
 
 func OutputBodyClose() string {

@@ -24,7 +24,7 @@ var (
 	title     = flag.String("title", "", "The title of the HTML file, if blank it will be generated from the first h1 in the markdown file.")
 	outfile   = flag.String("out", "index.html", "The name of the output file(Only used for the first file, others will be named `inputfile.html`)")
 	snowflake = flag.Bool("snowflake", true, "add a snowflake to the page footer")
-	i2plink   = flag.Bool("i2plink", true, "add an i2p link to the page footer")
+	i2plink   = flag.Bool("i2plink", true, "add an i2p link to the page footer. Logo courtesy of @Shoalsteed and @mark22k")
 )
 
 func listAllMarkdownFiles() string {
