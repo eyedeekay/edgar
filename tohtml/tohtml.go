@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/microcosm-cc/bluemonday"
@@ -174,6 +175,10 @@ func I2PLink() string {
 	if err := ioutil.WriteFile(i2plogopath, bytes, 0644); err != nil {
 		fmt.Printf("Error writing logo: %s", err)
 		return ""
+	}
+	gitAddCmd := exec.Command("git", "add", i2plogopath)
+	if err := gitAddCmd.Run(); err != nil {
+		fmt.Printf("Git Add Error: %s", err)
 	}
 	return "	<div><a href=\"https://geti2p.net/\"><img src=\"" + i2plogopath + "\"></img>I2P</a></div>\n"
 }
