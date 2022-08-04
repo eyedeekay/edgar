@@ -159,7 +159,7 @@ var logo embed.FS
 
 func I2PLink() string {
 	i2plogopath := "i2plogo.png"
-	file, err := logo.Open(i2plogopath)
+	file, err := logo.Open("I2Plogotoopiebanner.png")
 	if err != nil {
 		fmt.Printf("Error opening logo: %s", err)
 		return ""
