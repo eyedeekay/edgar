@@ -158,7 +158,7 @@ func Snowflake() string {
 var logo embed.FS
 
 func I2PLink() string {
-	i2plogopath := i2plogopath
+	i2plogopath := "i2plogo.png"
 	file, err := logo.Open(i2plogopath)
 	if err != nil {
 		fmt.Printf("Error opening logo: %s", err)
