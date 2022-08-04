@@ -158,7 +158,8 @@ func Snowflake() string {
 var logo embed.FS
 
 func I2PLink() string {
-	file, err := logo.Open("I2Plogotoopiebanner.png")
+	i2plogopath := i2plogopath
+	file, err := logo.Open(i2plogopath)
 	if err != nil {
 		fmt.Printf("Error opening logo: %s", err)
 		return ""
@@ -170,11 +171,11 @@ func I2PLink() string {
 		fmt.Printf("Error reading logo: %s", err)
 		return ""
 	}
-	if err := ioutil.WriteFile("I2Plogotoopiebanner.png", bytes, 0644); err != nil {
+	if err := ioutil.WriteFile(i2plogopath, bytes, 0644); err != nil {
 		fmt.Printf("Error writing logo: %s", err)
 		return ""
 	}
-	return "	<div><a href=\"https://geti2p.net/\"><img src=\"I2PLogotoopiebanner.png\"></img>I2P</a></div>\n"
+	return "	<div><a href=\"https://geti2p.net/\"><img src=\"" + i2plogopath + "\"></img>I2P</a></div>\n"
 }
 
 func OutputBodyClose() string {
