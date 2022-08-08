@@ -169,9 +169,4 @@ var ShowHiderCSS = `/* edgar showhider CSS file */
 #hidenav {display:block; }
 #shownav:target {display: block; }
 #hidenav:target {display: none; }
-
-#navbar {
-	float: right;
-	width: 10%;
-}
 `
