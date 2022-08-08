@@ -86,7 +86,7 @@ func OutputShowHiderCSSTag() string {
 		if err != nil {
 			fmt.Printf("Error reading CSS file: %s", err)
 		}
-		if strings.Contains(string(bytes), "/* edgar default CSS file */") {
+		if strings.Contains(string(bytes), "/* edgar showhider CSS file */") {
 			fmt.Printf("CSS file already contains default CSS, updating it\n")
 			err := ioutil.WriteFile(cssFile, []byte(ShowHiderCSS), 0644)
 			if err != nil {
