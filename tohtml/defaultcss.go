@@ -158,3 +158,20 @@ input {
 	width: 10%;
 }
 `
+
+var ShowHiderCSS = `/* edgar showhider CSS file */
+#show {display:none; }
+#hide {display:block; }
+#show:target {display: block; }
+#hide:target {display: none; }
+
+#shownav {display:none; }
+#hidenav {display:block; }
+#shownav:target {display: block; }
+#hidenav:target {display: none; }
+
+#navbar {
+	float: right;
+	width: 10%;
+}
+`

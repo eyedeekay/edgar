@@ -73,6 +73,30 @@ func OutputCSSTag(cssFile string) string {
 	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
 }
 
+func OutputShowHiderCSSTag() string {
+	cssFile := "showhider.css"
+	if _, err := os.Stat(cssFile); err != nil {
+		err := ioutil.WriteFile(cssFile, []byte(ShowHiderCSS), 0644)
+		if err != nil {
+			fmt.Printf("Error writing default CSS file: %s", err)
+		}
+	} else {
+		// check if the phrase: /* edgar default CSS file */ is in the file
+		bytes, err := ioutil.ReadFile(cssFile)
+		if err != nil {
+			fmt.Printf("Error reading CSS file: %s", err)
+		}
+		if strings.Contains(string(bytes), "/* edgar default CSS file */") {
+			fmt.Printf("CSS file already contains default CSS, updating it\n")
+			err := ioutil.WriteFile(cssFile, []byte(ShowHiderCSS), 0644)
+			if err != nil {
+				fmt.Printf("Error writing default CSS file: %s", err)
+			}
+		}
+	}
+	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
+}
+
 func OutputScriptTag(scriptFile string) string {
 	return "		<script type=\"text/javascript\" src=\"" + scriptFile + "\"></script>" + "\n"
 }

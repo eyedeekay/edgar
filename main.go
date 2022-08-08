@@ -104,6 +104,7 @@ func runGenerator(file, out string) {
 	output += tohtml.OutputMetaTag("description", findGithubRepoName())
 	output += tohtml.OutputMetaTag("keywords", getCurrentBranch())
 	output += tohtml.OutputCSSTag(*css)
+	output += tohtml.OutputShowHiderCSSTag()
 	if *script != "" {
 		output += tohtml.OutputScriptTag(*script)
 	}
