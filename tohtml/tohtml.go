@@ -10,6 +10,7 @@ import (
 
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
+	"github.com/shurcooL/github_flavored_markdown"
 )
 
 func ReadFirstMarkdownHeader(fileName string) (string, error) {
@@ -115,7 +116,9 @@ func outputHTMLFromMarkdown(filename string) string {
 		fmt.Printf("Error reading file: %s", err)
 		panic(err)
 	}
-	unsafe := blackfriday.Run(bytes)
+
+	//unsafe := blackfriday.Run(bytes, blackfriday.WithExtensions(blackfriday.CommonExtensions))
+	unsafe := github_flavored_markdown.Markdown(bytes)
 	html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
 	return string(html) + "\n"
 }
