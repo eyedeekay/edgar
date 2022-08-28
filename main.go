@@ -88,7 +88,7 @@ func main() {
 		if index == 0 {
 			runGenerator(file, *outfile)
 		} else {
-			out := strings.Split(file, ".")[0] + ".html"
+			out := strings.Split(strings.TrimLeft(file, "."), ".")[0] + ".html"
 			runGenerator(file, out)
 		}
 	}

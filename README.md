@@ -8,6 +8,9 @@ I hope it's particularly useful for github pages.
 Basically, a really simple static site generator that take a single markdown file and emits
 reasonable-looking HTML page for it.
 
+STATUS: This project is maintained. I will respond to issues, pull requests, and feature requests within a few days. It does
+what it's supposed to do.
+
 Usage
 -----
 
