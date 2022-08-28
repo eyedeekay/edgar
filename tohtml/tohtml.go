@@ -127,7 +127,7 @@ func OutputHTMLFromMarkdown(filename, title string) string {
 	html := outputHTMLFromMarkdown(filename)
 	title = strings.TrimRight(strings.TrimLeft(title, "'"), "'")
 	if filename == "README.md" {
-		html = strings.Replace(html, title, "<a href=\"/\">"+title+"</a>", 1)
+		//html = strings.Replace(html, title, "<a href=\".\">"+title+"</a>", 1)
 	}
 	return html
 }
