@@ -162,6 +162,7 @@ func NavigationBar(files []string) string {
 	navbar += "<div id=\"shownav\">"
 	navbar += "<div id=\"hidenav\">"
 	navbar += "<ul>"
+	navbar += "<li><a href=\"" + ".." + "\">" + "Up one level ^" + "</a></li>"
 	for _, file := range files {
 		title := strings.Split(file, ".")[0]
 		if title == "README" {
