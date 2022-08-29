@@ -232,7 +232,14 @@ func OutputSourceRepos() string {
 			final = strings.Replace(final, "git@", "slug-", 1)
 			final = strings.Replace(final, "http://", "slug-", 1)
 			final = strings.Replace(final, "https://", "slugs-", 1)
-			final = strings.Replace(final, ":", "/", 0)
+			final = strings.Replace(final, ":", "/", 1)
+			if strings.Contains(final, "127.0.0.1") || strings.Contains(final, "localhost") || strings.Contains(final, ".i2p/") || strings.Contains(final, ".onion/") {
+				final = strings.Replace(final, "slug-", "http://", 1)
+			} else {
+				final = strings.Replace(final, "slug-", "https://", 1)
+			}
+
+			final = strings.Replace(final, "slugs-", "https://", 1)
 			//, "git@", "http://", 1)
 			log.Println("BASE URL:", final)
 		}
