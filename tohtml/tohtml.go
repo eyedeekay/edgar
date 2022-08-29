@@ -4,7 +4,6 @@ import (
 	"embed"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -240,8 +239,14 @@ func OutputSourceRepos() string {
 			}
 
 			final = strings.Replace(final, "slugs-", "https://", 1)
-			//, "git@", "http://", 1)
-			log.Println("BASE URL:", final)
+			ret := "<div id=\"sourcecode\">"
+			ret += "    <ul>"
+			ret += "        <li>"
+			ret += "        <a href=\"" + final + "\">Source Code: (" + final + ")</a>"
+			ret += "        </li>"
+			ret += "    </ul>"
+			ret += "</div>"
+			return ret
 		}
 	}
 	return ""
