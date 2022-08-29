@@ -228,7 +228,39 @@ func OutputSourceRepos() string {
 	} else {
 		base := strings.Split(string(output), "\t")
 		if len(base) > 2 {
-			log.Println("BASE URL:", strings.Split(base[1], " ")[0])
+			final := strings.Replace(
+				strings.Replace(
+					strings.Replace(
+						strings.Replace(
+							strings.Replace(
+								strings.Replace(
+									strings.Split(base[1], " ")[0],
+									"http://",
+									"slug-",
+									0,
+								),
+								"https://",
+								"slugs-",
+								0,
+							),
+							"git@",
+							"slug-",
+							0,
+						),
+						":",
+						"/",
+						0,
+					),
+					"slug-",
+					"http://",
+					0,
+				),
+				"slugs-",
+				"https://",
+				0,
+			)
+			//, "git@", "http://", 1)
+			log.Println("BASE URL:", final)
 		}
 	}
 	return ""
