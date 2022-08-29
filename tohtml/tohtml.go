@@ -226,7 +226,10 @@ func OutputSourceRepos() string {
 		fmt.Printf("Git Add Error: %s", err)
 		os.Exit(1)
 	} else {
-		log.Println(strings.Split(string(output), "\t")[1])
+		base := strings.Split(string(output), "\t")
+		if len(base) > 2 {
+			log.Println("BASE URL:", strings.Split(base[1], " ")[0])
+		}
 	}
 	return ""
 }
