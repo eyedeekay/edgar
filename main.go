@@ -112,6 +112,7 @@ func runGenerator(file, out string) {
 	output += tohtml.OutputBodyOpen()
 	output += tohtml.NavigationBar(filesList)
 	output += tohtml.OutputHTMLFromMarkdown(file, *title)
+	output += tohtml.OutputSourceRepos()
 	output += tohtml.License()
 	if *snowflake {
 		output += tohtml.Snowflake()

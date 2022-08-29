@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -217,4 +218,15 @@ func OutputBodyClose() string {
 
 func OutputHTMLClose() string {
 	return "</html>" + "\n"
+}
+
+func OutputSourceRepos() string {
+	gitAddCmd := exec.Command("git", "remote", "-v")
+	if output, err := gitAddCmd.Output(); err != nil {
+		fmt.Printf("Git Add Error: %s", err)
+		os.Exit(1)
+	} else {
+		log.Println(string(output))
+	}
+	return ""
 }
