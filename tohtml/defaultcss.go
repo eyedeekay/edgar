@@ -155,7 +155,7 @@ input {
 
 #navbar {
 	float: right;
-	width: 10%;
+	width: 15%;
 }
 `
 
