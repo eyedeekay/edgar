@@ -226,7 +226,7 @@ func OutputSourceRepos() string {
 		fmt.Printf("Git Add Error: %s", err)
 		os.Exit(1)
 	} else {
-		log.Println(string(output))
+		log.Println(strings.Split(string(output), "\t")[1])
 	}
 	return ""
 }
