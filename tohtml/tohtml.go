@@ -240,6 +240,9 @@ func OutputSourceRepos() string {
 
 			final = strings.Replace(final, "slugs-", "https://", 1)
 			ret := "<div id=\"sourcecode\">"
+			ret += "    <span id=\"sourcehead\">"
+			ret += "    <strong>Get the source code:</strong>"
+			ret += "    </span>"
 			ret += "    <ul>"
 			ret += "        <li>"
 			ret += "        <a href=\"" + final + "\">Source Code: (" + final + ")</a>"
