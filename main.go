@@ -25,11 +25,13 @@ var (
 	outfile   = flag.String("out", "index.html", "The name of the output file(Only used for the first file, others will be named `inputfile.html`)")
 	snowflake = flag.Bool("snowflake", true, "add a snowflake to the page footer")
 	i2plink   = flag.Bool("i2plink", true, "add an i2p link to the page footer. Logo courtesy of @Shoalsteed and @mark22k")
+	nodonate  = flag.Bool("nodonate", true, "disable the donate section(those are my wallet addresses)")
 	donate    = flag.String(
 		"donate",
 		"monero:4A2BwLabGUiU65C5JRfwXqFTwWPYNSmuZRjbTDjsu9wT6wV6kMFyXn83ydnVjVcR7BCsWh8B5b4Z9b6cmqjfZiFd9sBUpWT,bitcoin:1D1sDmyZAs5q2Lb29q8TBnGhEJK7vfp5PJ",
-		"add donation shemes to cryptocurrency wallets. Use the address URL schemes, separated by commas",
+		"add donation section to cryptocurrency wallets. Use the address URL schemes, separated by commas",
 	)
+	donatemessage = flag.String("support", "Support development of this project", "change message/CTA for donations section.")
 )
 
 func listAllMarkdownFiles() string {
@@ -118,7 +120,9 @@ func runGenerator(file, out string) {
 	output += tohtml.NavigationBar(filesList)
 	output += tohtml.OutputHTMLFromMarkdown(file, *title)
 	output += tohtml.OutputSourceRepos()
-	output += tohtml.OutputDonationURLs(*donate)
+	if !*nodonate {
+		output += tohtml.OutputDonationURLs(*donate, *donatemessage)
+	}
 	output += tohtml.License()
 	if *snowflake {
 		output += tohtml.Snowflake()
