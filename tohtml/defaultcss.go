@@ -159,6 +159,7 @@ input {
 }
 #return {
     float: left;
+    font-size: larger;
 }
 `
 
