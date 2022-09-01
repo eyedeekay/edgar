@@ -245,7 +245,7 @@ func OutputSourceRepos() string {
 			ret += "    </span>"
 			ret += "    <ul>"
 			ret += "        <li>"
-			ret += "        <a href=\"" + final + "\">Source Code: (" + final + ")</a>"
+			ret += "            <a href=\"" + final + "\">Source Repository: (" + final + ")</a>"
 			ret += "        </li>"
 			ret += "    </ul>"
 			ret += "</div>"
@@ -258,18 +258,18 @@ func OutputSourceRepos() string {
 func OutputDonationURLs(donate, donatemessage string) string {
 	split := strings.Split(donate, ",")
 	ret := "<div id=\"donate\">"
-	ret += "<div id=\"donatemessage\">"
+	ret += "  <div id=\"donatemessage\">"
 	ret += donatemessage
-	ret += "</div>"
+	ret += "  </div>"
 	for _, addr := range split {
-		ret += "<div class=\"wallet-addr\">"
-		ret += "<a href=\"" + addr + "\">"
+		ret += "  <div class=\"wallet-addr\">"
+		ret += "  <a href=\"" + addr + "\">"
 		ret += strings.Split(addr, ":")[0]
-		ret += "</a>"
-		ret += "<div id=\"" + strings.Split(addr, ":")[0] + "\">"
+		ret += "  </a>"
+		ret += "  <div id=\"" + strings.Split(addr, ":")[0] + "\">"
 		ret += addr
-		ret += "</div>"
-		ret += "</div>"
+		ret += "  </div>"
+		ret += "  </div>"
 	}
 	ret += "</div>"
 	return ret

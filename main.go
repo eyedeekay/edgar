@@ -26,11 +26,11 @@ var (
 	outfile   = flag.String("out", "index.html", "The name of the output file(Only used for the first file, others will be named `inputfile.html`)")
 	snowflake = flag.Bool("snowflake", true, "add a snowflake to the page footer")
 	i2plink   = flag.Bool("i2plink", true, "add an i2p link to the page footer. Logo courtesy of @Shoalsteed and @mark22k")
-	nodonate  = flag.Bool("nodonate", true, "disable the donate section(those are my wallet addresses)")
+	nodonate  = flag.Bool("nodonate", true, "disable the donate section(change the -donate wallet addresses before setting this to true)")
 	donate    = flag.String(
 		"donate",
 		"monero:4A2BwLabGUiU65C5JRfwXqFTwWPYNSmuZRjbTDjsu9wT6wV6kMFyXn83ydnVjVcR7BCsWh8B5b4Z9b6cmqjfZiFd9sBUpWT,bitcoin:1D1sDmyZAs5q2Lb29q8TBnGhEJK7vfp5PJ,ethereum:0x539a4356bb0566a39376CaC3F50B558F77E84eC9",
-		"add donation section to cryptocurrency wallets. Use the address URL schemes, separated by commas(no spaces)",
+		"add donation section to cryptocurrency wallets. Use the address URL schemes, separated by commas(no spaces). Change them before running unless you want the money to go to me.",
 	)
 	donatemessage = flag.String("support", "Support development"+myDirectory(), "change message/CTA for donations section.")
 )
