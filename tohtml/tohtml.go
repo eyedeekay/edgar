@@ -251,3 +251,19 @@ func OutputSourceRepos() string {
 	}
 	return ""
 }
+
+func OutputDonationURLs(donate string) string {
+	split := strings.Split(donate, ",")
+	ret := "<div id=\"donate\">"
+	for _, addr := range split {
+		ret += "<span class=\"wallet-addr\">"
+		ret += "<a href=\"" + addr + "\">"
+		ret += strings.Split(addr, ":")[0]
+		ret += "</a>"
+		ret += "<span id=\"" + strings.Split(addr, ":")[0] + "\">"
+		ret += addr
+		ret += "</span>"
+	}
+	ret += "</div>"
+	return ret
+}
