@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/eyedeekay/edgar/tohtml"
@@ -28,11 +29,23 @@ var (
 	nodonate  = flag.Bool("nodonate", true, "disable the donate section(those are my wallet addresses)")
 	donate    = flag.String(
 		"donate",
-		"monero:4A2BwLabGUiU65C5JRfwXqFTwWPYNSmuZRjbTDjsu9wT6wV6kMFyXn83ydnVjVcR7BCsWh8B5b4Z9b6cmqjfZiFd9sBUpWT,bitcoin:1D1sDmyZAs5q2Lb29q8TBnGhEJK7vfp5PJ",
-		"add donation section to cryptocurrency wallets. Use the address URL schemes, separated by commas",
+		"monero:4A2BwLabGUiU65C5JRfwXqFTwWPYNSmuZRjbTDjsu9wT6wV6kMFyXn83ydnVjVcR7BCsWh8B5b4Z9b6cmqjfZiFd9sBUpWT,bitcoin:1D1sDmyZAs5q2Lb29q8TBnGhEJK7vfp5PJ,ethereum:0x539a4356bb0566a39376CaC3F50B558F77E84eC9",
+		"add donation section to cryptocurrency wallets. Use the address URL schemes, separated by commas(no spaces)",
 	)
-	donatemessage = flag.String("support", "Support development of this project", "change message/CTA for donations section.")
+	donatemessage = flag.String("support", "Support development"+myDirectory(), "change message/CTA for donations section.")
 )
+
+func myDirectory() string {
+	override := os.Getenv("PROJECT_NAME")
+	if override == "" {
+		wd, err := os.Getwd()
+		if err != nil {
+			return ""
+		}
+		return " of " + filepath.Base(wd)
+	}
+	return override
+}
 
 func listAllMarkdownFiles() string {
 	files, err := ioutil.ReadDir(".")
@@ -120,7 +133,7 @@ func runGenerator(file, out string) {
 	output += tohtml.NavigationBar(filesList)
 	output += tohtml.OutputHTMLFromMarkdown(file, *title)
 	output += tohtml.OutputSourceRepos()
-	if !*nodonate {
+	if !*nodonate || *donate == "" {
 		output += tohtml.OutputDonationURLs(*donate, *donatemessage)
 	}
 	output += tohtml.License()
