@@ -157,6 +157,9 @@ input {
 	float: right;
 	width: 15%;
 }
+#return {
+    float: left;
+}
 `
 
 var ShowHiderCSS = `/* edgar showhider CSS file */
