@@ -32,7 +32,7 @@ var (
 		"monero:4A2BwLabGUiU65C5JRfwXqFTwWPYNSmuZRjbTDjsu9wT6wV6kMFyXn83ydnVjVcR7BCsWh8B5b4Z9b6cmqjfZiFd9sBUpWT,bitcoin:1D1sDmyZAs5q2Lb29q8TBnGhEJK7vfp5PJ,ethereum:0x539a4356bb0566a39376CaC3F50B558F77E84eC9",
 		"add donation section to cryptocurrency wallets. Use the address URL schemes, separated by commas(no spaces). Change them before running unless you want the money to go to me.",
 	)
-	donatemessage = flag.String("support", "Support development"+myDirectory(), "change message/CTA for donations section.")
+	donatemessage = flag.String("support", "Support independent development"+myDirectory(), "change message/CTA for donations section.")
 )
 
 func myDirectory() string {
