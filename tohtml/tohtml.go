@@ -1,4 +1,4 @@
-bpackage tohtml
+package tohtml
 
 import (
 	"embed"
