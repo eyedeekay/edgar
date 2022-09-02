@@ -160,6 +160,10 @@ input {
 #returnhome {
     font-size: xxx-large;
     float: left;
+    display: inline;
+}
+h1 {
+    display: inline;
 }
 `
 
