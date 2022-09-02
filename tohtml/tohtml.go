@@ -1,4 +1,4 @@
-package tohtml
+bpackage tohtml
 
 import (
 	"embed"
@@ -277,5 +277,6 @@ func OutputDonationURLs(donate, donatemessage string) string {
 	ret += "  </div>"
 	ret += "  </div>"
 	ret += "</div>"
+	ret += "</br>"
 	return ret
 }
