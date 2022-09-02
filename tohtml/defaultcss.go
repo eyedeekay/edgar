@@ -157,9 +157,9 @@ input {
 	float: right;
 	width: 15%;
 }
-#return {
+#returnhome {
+    font-size: xxx-large;
     float: left;
-    font-size: larger;
 }
 `
 
