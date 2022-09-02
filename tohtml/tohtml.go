@@ -120,7 +120,7 @@ func outputHTMLFromMarkdown(filename string) string {
 	//unsafe := blackfriday.Run(bytes, blackfriday.WithExtensions(blackfriday.CommonExtensions))
 	unsafe := github_flavored_markdown.Markdown(bytes)
 	html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
-	return "<a id=\"return\" href=\"/\">/</a>" + string(html) + "\n"
+	return "<h1><a id=\"return\" href=\"/\">/</a></h1>" + string(html) + "\n"
 }
 
 func OutputHTMLFromMarkdown(filename, title string) string {
