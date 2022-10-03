@@ -38,6 +38,7 @@ img {
     left: 5%;
     max-width: 60%;
     display: inline;
+    padding-right: 2%;
 }
 
 .inline {
