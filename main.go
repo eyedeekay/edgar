@@ -65,6 +65,11 @@ func listAllMarkdownFiles() string {
 				if file.Name() != "README.md" {
 					fileList = append(fileList, file.Name())
 				}
+			} else if strings.HasSuffix(file.Name(), ".html") {
+				mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+				if _, err := os.Stat(mdExtension); err != nil {
+					fileList = append(fileList, file.Name())
+				}
 			}
 		}
 	}
@@ -115,6 +120,9 @@ func main() {
 }
 
 func runGenerator(file, out string) {
+	if strings.HasSuffix(file, ".html") {
+		return
+	}
 	fmt.Println("Converting", file, "to", out)
 	filesList := strings.Split(*filename, ",")
 	output := tohtml.OutputHTMLOpen()
