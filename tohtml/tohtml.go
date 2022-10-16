@@ -72,8 +72,8 @@ func OutputCSSTag(cssFile string) string {
 	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
 }
 
-func OutputShowHiderCSSTag() string {
-	cssFile := "showhider.css"
+func OutputShowHiderCSSTag(cssFile string) string {
+	//cssFile := "showhider.css"
 	if _, err := os.Stat(cssFile); err != nil {
 		err := ioutil.WriteFile(cssFile, []byte(ShowHiderCSS), 0644)
 		if err != nil {

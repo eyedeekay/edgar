@@ -73,11 +73,13 @@ func listAllMarkdownFiles() string {
 			}
 		}
 	}
-	if _, err := os.Stat("./docs"); err == nil {
+	if _, err := os.Stat("docs"); err == nil {
 		docs, err := ioutil.ReadDir("docs")
 		if err != nil {
 			log.Fatal(err)
 		}
+		tohtml.OutputCSSTag("docs/styles.css")
+		tohtml.OutputShowHiderCSSTag("docs/showhider.css")
 
 		//var fileList []string
 		for _, file := range docs {
@@ -100,6 +102,8 @@ func listAllMarkdownFiles() string {
 		if err != nil {
 			log.Fatal(err)
 		}
+		tohtml.OutputCSSTag("doc/styles.css")
+		tohtml.OutputShowHiderCSSTag("doc/showhider.css")
 		//var fileList []string
 		for _, file := range docs {
 			if !file.IsDir() {
@@ -174,7 +178,7 @@ func runGenerator(file, out string) {
 	output += tohtml.OutputMetaTag("description", findGithubRepoName())
 	output += tohtml.OutputMetaTag("keywords", getCurrentBranch())
 	output += tohtml.OutputCSSTag(*css)
-	output += tohtml.OutputShowHiderCSSTag()
+	output += tohtml.OutputShowHiderCSSTag("showhider.css")
 	if *script != "" {
 		output += tohtml.OutputScriptTag(*script)
 	}
