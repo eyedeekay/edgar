@@ -164,7 +164,7 @@ func NavigationBar(files []string, out string) string {
 	navbar += "<li><a href=\"" + ".." + "\">" + "Up one level ^" + "</a></li>"
 	for _, file := range files {
 		if count > 1 {
-			file = strings.Join(strings.Split(file, "/")[1:], "/")
+			file = strings.Join(strings.Split(file, "/")[count-1:], "/")
 		}
 		if strings.HasSuffix(file, ".md") {
 			title := strings.Split(strings.ReplaceAll(file, "README", "index"), ".")[0]
