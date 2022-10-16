@@ -82,14 +82,14 @@ func listAllMarkdownFiles() string {
 		//var fileList []string
 		for _, file := range docs {
 			if !file.IsDir() {
-				if strings.HasSuffix(file.Name(), ".md") {
-					if file.Name() != "README.md" {
-						fileList = append(fileList, file.Name())
+				if strings.HasSuffix(filepath.Join("docs", file.Name()), ".md") {
+					if filepath.Join("docs", file.Name()) != "README.md" {
+						fileList = append(fileList, filepath.Join("docs", file.Name()))
 					}
-				} else if strings.HasSuffix(file.Name(), ".html") {
-					mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+				} else if strings.HasSuffix(filepath.Join("docs", file.Name()), ".html") {
+					mdExtension := strings.ReplaceAll(filepath.Join("docs", file.Name()), ".html", ".md")
 					if _, err := os.Stat(mdExtension); err != nil {
-						fileList = append(fileList, file.Name())
+						fileList = append(fileList, filepath.Join("docs", file.Name()))
 					}
 				}
 			}
@@ -104,14 +104,14 @@ func listAllMarkdownFiles() string {
 		//var fileList []string
 		for _, file := range docs {
 			if !file.IsDir() {
-				if strings.HasSuffix(file.Name(), ".md") {
-					if file.Name() != "README.md" {
-						fileList = append(fileList, file.Name())
+				if strings.HasSuffix(filepath.Join("doc", file.Name()), ".md") {
+					if filepath.Join("doc", file.Name()) != "README.md" {
+						fileList = append(fileList, filepath.Join("doc", file.Name()))
 					}
-				} else if strings.HasSuffix(file.Name(), ".html") {
-					mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+				} else if strings.HasSuffix(filepath.Join("doc", file.Name()), ".html") {
+					mdExtension := strings.ReplaceAll(filepath.Join("doc", file.Name()), ".html", ".md")
 					if _, err := os.Stat(mdExtension); err != nil {
-						fileList = append(fileList, file.Name())
+						fileList = append(fileList, filepath.Join("doc", file.Name()))
 					}
 				}
 			}
