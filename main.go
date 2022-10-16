@@ -155,7 +155,7 @@ func main() {
 		if index == 0 {
 			runGenerator(file, *outfile)
 		} else {
-			out := strings.Split(strings.TrimLeft(file, "."), ".")[0] + ".html"
+			out := strings.Split(strings.ReplaceAll(strings.TrimLeft(file, "."), "README", "index"), ".")[0] + ".html"
 			runGenerator(file, out)
 		}
 	}
