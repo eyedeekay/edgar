@@ -193,7 +193,7 @@ func runGenerator(file, out string) {
 	}
 	output += tohtml.OutputHeaderClose()
 	output += tohtml.OutputBodyOpen()
-	output += tohtml.NavigationBar(filesList)
+	output += tohtml.NavigationBar(filesList, out)
 	output += tohtml.OutputHTMLFromMarkdown(file, *title)
 	output += tohtml.OutputSourceRepos()
 	if !*nodonate || *donate == "" {

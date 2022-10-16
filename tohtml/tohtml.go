@@ -154,7 +154,8 @@ func License() string {
 	return licensehtml
 }
 
-func NavigationBar(files []string) string {
+func NavigationBar(files []string, out string) string {
+	count := len(strings.Split(out, "/"))
 	navbar := "<div id=\"navbar\">"
 	navbar += "<a href=\"#shownav\">Show navigation</a>"
 	navbar += "<div id=\"shownav\">"
@@ -162,6 +163,9 @@ func NavigationBar(files []string) string {
 	navbar += "<ul>"
 	navbar += "<li><a href=\"" + ".." + "\">" + "Up one level ^" + "</a></li>"
 	for _, file := range files {
+		if count > 1 {
+			file = strings.Join(strings.Split(file, "/")[1:], "/")
+		}
 		if strings.HasSuffix(file, ".md") {
 			title := strings.Split(strings.ReplaceAll(file, "README", "index"), ".")[0]
 			if title == "README" {
