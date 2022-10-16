@@ -169,11 +169,13 @@ func NavigationBar(files []string) string {
 			}
 			navbar += "<li><a href=\"" + title + ".html" + "\">" + title + "</a></li>"
 		} else {
-			title := strings.ReplaceAll(file, "README", "index")
-			if title == "README" {
-				title = "index"
+			if !strings.Contains(file, "index") {
+				title := strings.ReplaceAll(file, "README", "index")
+				if title == "README" {
+					title = "index"
+				}
+				navbar += "<li><a href=\"" + title + "\">" + title + "</a></li>"
 			}
-			navbar += "<li><a href=\"" + title + "\">" + title + "</a></li>"
 		}
 	}
 	navbar += "</ul>"
