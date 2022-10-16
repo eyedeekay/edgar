@@ -80,7 +80,11 @@ func listAllMarkdownFiles() string {
 		}
 		tohtml.OutputCSSTag("docs/styles.css")
 		tohtml.OutputShowHiderCSSTag("docs/showhider.css")
-
+		gitAddCmd := exec.Command("git", "add", "docs/styles.css", "docs/showhider.css")
+		if err := gitAddCmd.Run(); err != nil {
+			fmt.Printf("Git Add Error: %s", err)
+			os.Exit(1)
+		}
 		//var fileList []string
 		for _, file := range docs {
 			if !file.IsDir() {
@@ -104,6 +108,11 @@ func listAllMarkdownFiles() string {
 		}
 		tohtml.OutputCSSTag("doc/styles.css")
 		tohtml.OutputShowHiderCSSTag("doc/showhider.css")
+		gitAddCmd := exec.Command("git", "add", "doc/styles.css", "doc/showhider.css")
+		if err := gitAddCmd.Run(); err != nil {
+			fmt.Printf("Git Add Error: %s", err)
+			os.Exit(1)
+		}
 		//var fileList []string
 		for _, file := range docs {
 			if !file.IsDir() {
