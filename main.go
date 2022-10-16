@@ -73,7 +73,50 @@ func listAllMarkdownFiles() string {
 			}
 		}
 	}
+	if _, err := os.Stat("./docs"); err != nil {
+		docs, err := ioutil.ReadDir("./docs")
+		if err != nil {
+			log.Fatal(err)
+		}
 
+		//var fileList []string
+		for _, file := range docs {
+			if !file.IsDir() {
+				if strings.HasSuffix(file.Name(), ".md") {
+					if file.Name() != "README.md" {
+						fileList = append(fileList, file.Name())
+					}
+				} else if strings.HasSuffix(file.Name(), ".html") {
+					mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+					if _, err := os.Stat(mdExtension); err != nil {
+						fileList = append(fileList, file.Name())
+					}
+				}
+			}
+		}
+	}
+	if _, err := os.Stat("./doc"); err != nil {
+		docs, err := ioutil.ReadDir("./docs")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//var fileList []string
+		for _, file := range docs {
+			if !file.IsDir() {
+				if strings.HasSuffix(file.Name(), ".md") {
+					if file.Name() != "README.md" {
+						fileList = append(fileList, file.Name())
+					}
+				} else if strings.HasSuffix(file.Name(), ".html") {
+					mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+					if _, err := os.Stat(mdExtension); err != nil {
+						fileList = append(fileList, file.Name())
+					}
+				}
+			}
+		}
+	}
 	return strings.Join(fileList, ",")
 }
 
