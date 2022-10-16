@@ -78,9 +78,9 @@ func listAllMarkdownFiles() string {
 		if err != nil {
 			log.Fatal(err)
 		}
-		tohtml.OutputCSSTag("docs/styles.css")
+		tohtml.OutputCSSTag("docs/style.css")
 		tohtml.OutputShowHiderCSSTag("docs/showhider.css")
-		gitAddCmd := exec.Command("git", "add", "docs/styles.css", "docs/showhider.css")
+		gitAddCmd := exec.Command("git", "add", "docs/style.css", "docs/showhider.css")
 		if err := gitAddCmd.Run(); err != nil {
 			fmt.Printf("Git Add Error: %s", err)
 			os.Exit(1)
@@ -106,9 +106,9 @@ func listAllMarkdownFiles() string {
 		if err != nil {
 			log.Fatal(err)
 		}
-		tohtml.OutputCSSTag("doc/styles.css")
+		tohtml.OutputCSSTag("doc/style.css")
 		tohtml.OutputShowHiderCSSTag("doc/showhider.css")
-		gitAddCmd := exec.Command("git", "add", "doc/styles.css", "doc/showhider.css")
+		gitAddCmd := exec.Command("git", "add", "doc/style.css", "doc/showhider.css")
 		if err := gitAddCmd.Run(); err != nil {
 			fmt.Printf("Git Add Error: %s", err)
 			os.Exit(1)
