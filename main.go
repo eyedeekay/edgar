@@ -100,7 +100,6 @@ func listAllMarkdownFiles() string {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		//var fileList []string
 		for _, file := range docs {
 			if !file.IsDir() {
