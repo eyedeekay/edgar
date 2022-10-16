@@ -73,8 +73,8 @@ func listAllMarkdownFiles() string {
 			}
 		}
 	}
-	if _, err := os.Stat("./docs"); err != nil {
-		docs, err := ioutil.ReadDir("./docs")
+	if _, err := os.Stat("./docs"); err == nil {
+		docs, err := ioutil.ReadDir("docs")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -95,8 +95,8 @@ func listAllMarkdownFiles() string {
 			}
 		}
 	}
-	if _, err := os.Stat("./doc"); err != nil {
-		docs, err := ioutil.ReadDir("./docs")
+	if _, err := os.Stat("./doc"); err == nil {
+		docs, err := ioutil.ReadDir("doc")
 		if err != nil {
 			log.Fatal(err)
 		}
