@@ -254,9 +254,9 @@ func findGithubRepoName() string {
 
 	// split at the /
 	repo = strings.Split(string(repo), "/")[1]
+	repo = strings.Replace(string(repo), "\n", "", -1)
 	repo = strings.TrimRight(string(repo), ".git")
-
-	return strings.Replace(repo, "\n", "", -1)
+	return repo
 }
 
 func enableGithubPage() error {
