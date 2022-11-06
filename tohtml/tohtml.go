@@ -4,8 +4,10 @@ import (
 	"embed"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/russross/blackfriday/v2"
@@ -291,4 +293,31 @@ func OutputDonationURLs(donate, donatemessage string) string {
 	ret += "</div>"
 	ret += "</br>"
 	return ret
+}
+
+func head(num int) string {
+	var r string
+	for i := 0; i < num; i++ {
+		r += "="
+	}
+	return r
+}
+
+func OpenDirectory() string {
+	wd, _ := os.Getwd()
+	files, err := ioutil.ReadDir(wd)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var readme string
+	readme += fmt.Sprintf("%s\n", filepath.Base(wd))
+	readme += fmt.Sprintf("%s\n", head(len(filepath.Base(wd))))
+	for _, file := range files {
+		if !file.IsDir() {
+			fmt.Println(file.Name(), file.IsDir())
+			readme += fmt.Sprintf(" - `%s` : `%d`\n", file.Name(), file.Size())
+		}
+
+	}
+	return readme
 }

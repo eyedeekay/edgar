@@ -55,9 +55,11 @@ func listAllMarkdownFiles() string {
 
 	var fileList []string
 
-	if _, err := os.Stat("README.md"); err == nil {
-		fileList = append(fileList, "README.md")
+	if _, err := os.Stat("README.md"); err != nil {
+		err = ioutil.WriteFile("README.md", []byte(tohtml.OpenDirectory()), 0644)
+
 	}
+	fileList = append(fileList, "README.md")
 
 	for _, file := range files {
 		if !file.IsDir() {
@@ -101,7 +103,7 @@ func listAllMarkdownFiles() string {
 			}
 		}
 	}
-	if _, err := os.Stat("./doc"); err == nil {
+	if _, err := os.Stat("doc"); err == nil {
 		docs, err := ioutil.ReadDir("doc")
 		if err != nil {
 			log.Fatal(err)
