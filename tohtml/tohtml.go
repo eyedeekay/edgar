@@ -328,7 +328,7 @@ func OpenDirectory() string {
 	for _, file := range files {
 		if !file.IsDir() {
 			fmt.Println(file.Name(), file.IsDir())
-			readme += fmt.Sprintf(" - %s : `%d` : %s \n", file.Name(), file.Size(), file.Mode())
+			readme += fmt.Sprintf(" - %s : `%d` : `%s`\n", file.Name(), file.Size(), file.Mode())
 		}
 
 	}
