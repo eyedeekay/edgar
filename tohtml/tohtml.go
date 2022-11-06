@@ -1,6 +1,7 @@
 package tohtml
 
 import (
+	"context"
 	"crypto/sha256"
 	"embed"
 	"fmt"
@@ -11,7 +12,10 @@ import (
 	"path/filepath"
 	"strings"
 
+	github "github.com/google/go-github/v45/github"
 	"github.com/russross/blackfriday/v2"
+	"github.com/yosssi/gohtml"
+	"golang.org/x/oauth2"
 )
 
 func ReadFirstMarkdownHeader(fileName string) (string, error) {
@@ -334,8 +338,191 @@ func OpenDirectory() string {
 				panic(err)
 			}
 			sum := fmt.Sprintf("%x", sha256.Sum256(bytes))
-			readme += fmt.Sprintf(" - %s : `%d` : `%s` - `%s`\n", file.Name(), file.Size(), file.Mode(), sum)
+			readme += fmt.Sprintf(" - [%s](%s) : `%d` : `%s` - `%s`\n", file.Name(), file.Name(), file.Size(), file.Mode(), sum)
+		} else {
+			fmt.Println(file.Name(), file.IsDir())
+			readme += fmt.Sprintf(" - [%s](%s) : `%d` : `%s`\n", file.Name(), file.Name(), file.Size(), file.Mode())
 		}
 	}
 	return readme
+}
+
+func RunGenerator(file, out, filename, title, author, css, script, donate, donatemessage string, nodonate, snowflake, i2plink bool) {
+	if strings.HasSuffix(file, ".html") {
+		return
+	}
+	fmt.Println("Converting", file, "to", out)
+	filesList := strings.Split(filename, ",")
+	output := OutputHTMLOpen()
+	output += OutputHeaderOpen()
+	output += OutputTitleTag(title)
+	output += OutputMetaTag("author", author)
+	output += OutputMetaTag("description", findGithubRepoName())
+	output += OutputMetaTag("keywords", getCurrentBranch())
+	output += OutputCSSTag(css)
+	output += OutputShowHiderCSSTag("showhider.css")
+	if script != "" {
+		output += OutputScriptTag(script)
+	}
+	output += OutputHeaderClose()
+	output += OutputBodyOpen()
+	output += NavigationBar(filesList, out)
+	output += OutputHTMLFromMarkdown(file, title)
+	output += OutputSourceRepos()
+	if !nodonate || donate == "" {
+		output += OutputDonationURLs(donate, donatemessage)
+	}
+	output += License()
+	if snowflake {
+		output += Snowflake()
+	}
+	if i2plink {
+		output += I2PLink()
+	}
+	output += OutputBodyClose()
+	output += OutputHTMLClose()
+	final := gohtml.Format(output)
+	err := ioutil.WriteFile(".nojekyll", []byte{}, 0644)
+	if err != nil {
+		fmt.Printf("No Jekyll Error \n %s", err)
+		os.Exit(1)
+	}
+	if out != "" && out != "-" {
+		if err := ioutil.WriteFile(out, []byte(final), 0644); err != nil {
+			fmt.Printf("Output Error %s", err)
+			os.Exit(1)
+		}
+		// determine if git is installled
+		cmd := exec.Command("git", "--version")
+		_, err := cmd.Output()
+		if err != nil {
+			fmt.Printf("Git not installed \n %s\n", err)
+		} else {
+			gitAddCmd := exec.Command("git", "add", out, ".nojekyll", css, "showhider.css")
+			if err := gitAddCmd.Run(); err != nil {
+				fmt.Printf("Git Add Error: %s", err)
+				os.Exit(1)
+			}
+			gitCommitCmd := exec.Command("git", "commit", "-am", "update "+out)
+			if out, err := gitCommitCmd.Output(); err != nil {
+				fmt.Printf("Git Commit Error: %s %s", out, err)
+			}
+			if err := enableGithubPage(); err != nil {
+				if strings.Contains(err.Error(), "409") {
+					fmt.Println("Page already exists, skipping")
+				} else if strings.Contains(err.Error(), "GITHUB_TOKEN not set") {
+					fmt.Println("GITHUB_TOKEN not set, skipping")
+				} else {
+					fmt.Printf("Github Pages Error: %s", err)
+				}
+			}
+		}
+	} else {
+		fmt.Println(final)
+	}
+}
+
+func findGithubRemote() string {
+	// list all the remotes
+	cmdRemotes := exec.Command("git", "remote", "-v")
+	rout, err := cmdRemotes.Output()
+	if err != nil {
+		return ""
+	}
+	var remote string
+	// find the github remote
+	for _, line := range strings.Split(string(rout), "\n") {
+		if strings.Contains(line, "github.com") {
+			// store the remote name
+			remote = strings.Split(line, "\t")[0]
+			fmt.Printf("Found remote %s\n", remote)
+			break
+		}
+	}
+	fmt.Printf("Looked up Github Remote: %s\n", remote)
+	return remote
+}
+
+func FindGithubUsername() string {
+	remote := findGithubRemote()
+	cmd := exec.Command("git", "remote", "get-url", remote)
+	out, err := cmd.Output()
+	if err != nil {
+		return ""
+	}
+	var user string
+	// trim away the scheme, domain
+	user = strings.SplitN(string(out), "github.com", 2)[1]
+
+	// trim away the leading separators
+	user = strings.TrimLeft(string(user), "/")
+	user = strings.TrimLeft(string(user), ":")
+
+	// split at the /
+	user = strings.Split(string(user), "/")[0]
+	return strings.Replace(user, "\n", "", -1)
+}
+
+func findGithubRepoName() string {
+	remote := findGithubRemote()
+	fmt.Printf("Remote: '%s'\n", remote)
+	cmd := exec.Command("git", "remote", "get-url", remote)
+	out, err := cmd.Output()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
+		return ""
+	}
+
+	// trim away the scheme, domain
+	repo := strings.SplitN(string(out), "github.com", 2)[1]
+
+	// trim away the leading separators
+	repo = strings.TrimLeft(string(repo), "/")
+	repo = strings.TrimLeft(string(repo), ":")
+
+	// split at the /
+	repo = strings.Split(string(repo), "/")[1]
+	repo = strings.Replace(string(repo), "\n", "", -1)
+	repo = strings.TrimRight(string(repo), ".git")
+	return repo
+}
+
+func enableGithubPage() error {
+	token := os.Getenv("GITHUB_TOKEN")
+	if len(token) == 0 {
+		return fmt.Errorf("GITHUB_TOKEN not set")
+	}
+	ctx := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: token},
+	)
+	tc := oauth2.NewClient(ctx, ts)
+	client := github.NewClient(tc)
+	repoName := findGithubRepoName()
+	if repoName == "" {
+		return fmt.Errorf("could not find github repo name")
+	}
+	branch := getCurrentBranch()
+	path := "/"
+	_, _, err := client.Repositories.EnablePages(ctx, FindGithubUsername(), repoName, &github.Pages{
+		Source: &github.PagesSource{
+			Branch: github.String(branch),
+			Path:   github.String(path),
+		},
+		Public: github.Bool(true),
+	})
+	if err != nil {
+		return fmt.Errorf("could not enable github pages: %v", err)
+	}
+
+	return nil
+}
+
+func getCurrentBranch() string {
+	cmd := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD")
+	out, err := cmd.Output()
+	if err != nil {
+		return ""
+	}
+	return strings.Replace(string(out), "\n", "", -1)
 }
