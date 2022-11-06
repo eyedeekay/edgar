@@ -1,6 +1,7 @@
 package tohtml
 
 import (
+	"crypto/sha256"
 	"embed"
 	"fmt"
 	"io/ioutil"
@@ -328,9 +329,13 @@ func OpenDirectory() string {
 	for _, file := range files {
 		if !file.IsDir() {
 			fmt.Println(file.Name(), file.IsDir())
-			readme += fmt.Sprintf(" - %s : `%d` : `%s`\n", file.Name(), file.Size(), file.Mode())
+			bytes, err := ioutil.ReadFile(file.Name())
+			if err != nil {
+				panic(err)
+			}
+			sum := sha256.Sum256(bytes)
+			readme += fmt.Sprintf(" - %s : `%d` : `%s` - `%s`\n", file.Name(), file.Size(), file.Mode(), sum)
 		}
-
 	}
 	return readme
 }
