@@ -303,6 +303,16 @@ func head(num int) string {
 	return r
 }
 
+func IsOpenDirectory(path string) bool {
+	if bytes, err := ioutil.ReadFile(path); err != nil {
+		return true
+	} else {
+		if strings.Contains(string(bytes), "**Directory Listing:**") {
+			return true
+		}
+	}
+	return false
+}
 func OpenDirectory() string {
 	wd, _ := os.Getwd()
 	files, err := ioutil.ReadDir(wd)
@@ -312,10 +322,13 @@ func OpenDirectory() string {
 	var readme string
 	readme += fmt.Sprintf("%s\n", filepath.Base(wd))
 	readme += fmt.Sprintf("%s\n", head(len(filepath.Base(wd))))
+	readme += fmt.Sprintf("%s\n", "")
+	readme += fmt.Sprintf("%s\n", "**Directory Listing:**")
+	readme += fmt.Sprintf("%s\n", "")
 	for _, file := range files {
 		if !file.IsDir() {
 			fmt.Println(file.Name(), file.IsDir())
-			readme += fmt.Sprintf(" - `%s` : `%d`\n", file.Name(), file.Size())
+			readme += fmt.Sprintf(" - %s : `%d` : %s \n", file.Name(), file.Size(), file.Mode())
 		}
 
 	}
