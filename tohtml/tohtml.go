@@ -333,7 +333,7 @@ func OpenDirectory() string {
 			if err != nil {
 				panic(err)
 			}
-			sum := fmt.Sprintf("%s", sha256.Sum256(bytes))
+			sum := fmt.Sprintf("%x", sha256.Sum256(bytes))
 			readme += fmt.Sprintf(" - %s : `%d` : `%s` - `%s`\n", file.Name(), file.Size(), file.Mode(), sum)
 		}
 	}
