@@ -34,7 +34,18 @@ var (
 )
 
 func showHelp() {
+	fmt.Println("Edgar(Everything does get a README): Static Site Generator for the Paradoxically Prolific")
+	fmt.Println("=========================================================================================")
+	fmt.Println("")
+	fmt.Println("This is a static site generator which is intended to generate a page for a piece of software from markdown documents stored inside it's VCS.")
+	fmt.Println("It will generate a page from any directory containing markdown files, but it's especially useful for Github Pages with the `.nojekyll` option.")
+	fmt.Println("")
+	fmt.Println("```")
+	//os.Stdout = os.Stderr
+	os.Stderr = os.Stdout
 	flag.Usage()
+	fmt.Println("```")
+	fmt.Println("")
 }
 
 func myDirectory() string {

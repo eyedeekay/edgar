@@ -70,7 +70,6 @@ func OutputCSSTag(cssFile string) string {
 			fmt.Printf("Error reading CSS file: %s", err)
 		}
 		if strings.Contains(string(bytes), "/* edgar default CSS file */") {
-			fmt.Printf("CSS file already contains default CSS, updating it\n")
 			err := ioutil.WriteFile(cssFile, []byte(DefaultCSS), 0644)
 			if err != nil {
 				fmt.Printf("Error writing default CSS file: %s", err)
@@ -94,7 +93,6 @@ func OutputShowHiderCSSTag(cssFile string) string {
 			fmt.Printf("Error reading CSS file: %s", err)
 		}
 		if strings.Contains(string(bytes), "/* edgar showhider CSS file */") {
-			fmt.Printf("CSS file already contains default CSS, updating it\n")
 			err := ioutil.WriteFile(cssFile, []byte(ShowHiderCSS), 0644)
 			if err != nil {
 				fmt.Printf("Error writing default CSS file: %s", err)
@@ -450,11 +448,9 @@ func findGithubRemote() string {
 		if strings.Contains(line, "github.com") {
 			// store the remote name
 			remote = strings.Split(line, "\t")[0]
-			fmt.Printf("Found remote %s\n", remote)
 			break
 		}
 	}
-	fmt.Printf("Looked up Github Remote: %s\n", remote)
 	return remote
 }
 
