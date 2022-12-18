@@ -30,7 +30,12 @@ var (
 		"add donation section to cryptocurrency wallets. Use the address URL schemes, separated by commas(no spaces). Change them before running unless you want the money to go to me.",
 	)
 	donatemessage = flag.String("support", "Support independent development"+myDirectory(), "change message/CTA for donations section.")
+	help          = flag.Bool("help", false, "Show usage.")
 )
+
+func showHelp() {
+	flag.Usage()
+}
 
 func myDirectory() string {
 	override := os.Getenv("PROJECT_NAME")
@@ -167,6 +172,10 @@ func hasScript() string {
 
 func main() {
 	flag.Parse()
+	if *help {
+		showHelp()
+		return
+	}
 	filesList := strings.Split(*filename, ",")
 	if *title == "" {
 		var err error
