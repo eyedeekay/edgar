@@ -57,6 +57,10 @@ func OutputMetaTag(name, content string) string {
 	return "		<meta name=\"" + name + "\" content=\"" + content + "\" />" + "\n"
 }
 
+func OutputMetaEquiv(name, content string) string {
+	return "		<meta http-equiv=\"" + name + "\" content=\"" + content + "\" />" + "\n"
+}
+
 func OutputCSSTag(cssFile string) string {
 	if _, err := os.Stat(cssFile); err != nil {
 		err := ioutil.WriteFile(cssFile, []byte(DefaultCSS), 0644)
@@ -357,7 +361,7 @@ func OpenDirectory() string {
 	return readme
 }
 
-func RunGenerator(file, out, filename, title, author, css, script, donate, donatemessage string, nodonate, snowflake, i2plink bool) {
+func RunGenerator(file, out, filename, title, author, css, script, donate, donatemessage string, nodonate, snowflake, i2plink bool, i2pequiv string) {
 	if strings.HasSuffix(file, ".html") {
 		return
 	}
@@ -369,6 +373,9 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 	output += OutputMetaTag("author", author)
 	output += OutputMetaTag("description", findGithubRepoName())
 	output += OutputMetaTag("keywords", getCurrentBranch())
+	if i2pequiv != "" {
+		output += OutputMetaEquiv("i2p-location", i2pequiv)
+	}
 	output += OutputCSSTag(css)
 	output += OutputShowHiderCSSTag("showhider.css")
 	if script != "" {

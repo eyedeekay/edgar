@@ -31,6 +31,7 @@ var (
 	)
 	donatemessage = flag.String("support", "Support independent development"+myDirectory(), "change message/CTA for donations section.")
 	help          = flag.Bool("help", false, "Show usage.")
+	i2pequiv      = flag.String("i2p-location", "", "An i2p-location http-equiv value")
 )
 
 func showHelp() {
@@ -210,5 +211,5 @@ func main() {
 }
 
 func runGenerator(file, out string) {
-	tohtml.RunGenerator(file, out, *filename, *title, *author, *css, *script, *donate, *donatemessage, *nodonate, *snowflake, *i2plink)
+	tohtml.RunGenerator(file, out, *filename, *title, *author, *css, *script, *donate, *donatemessage, *nodonate, *snowflake, *i2plink, *i2pequiv)
 }
