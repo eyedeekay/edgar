@@ -20,6 +20,7 @@ var (
 	script    = flag.String("script", hasScript(), "The script file to use.")
 	title     = flag.String("title", "", "The title of the HTML file, if blank it will be generated from the first h1 in the markdown file.")
 	outfile   = flag.String("out", "index.html", "The name of the output file(Only used for the first file, others will be named `inputfile.html`)")
+	commit    = flag.Bool("checkin", true, "commit page generation changes after running")
 	snowflake = flag.Bool("snowflake", true, "add a snowflake to the page footer")
 	i2plink   = flag.Bool("i2plink", true, "add an i2p link to the page footer. Logo courtesy of @Shoalsteed and @mark22k")
 	nodonate  = flag.Bool("nodonate", true, "disable the donate section(change the -donate wallet addresses before setting this to true)")
@@ -77,6 +78,10 @@ func listAllMarkdownFiles() string {
 				if _, err := os.Stat(mdExtension); err != nil {
 					fileList = append(fileList, file.Name())
 				}
+			}
+		} else {
+			if _, err := os.Stat(filepath.Join(file.Name(), "index.html")); err == nil {
+				fileList = append(fileList, filepath.Join(file.Name(), "index.html"))
 			}
 		}
 	}
@@ -178,6 +183,9 @@ func main() {
 			out := strings.Split(strings.ReplaceAll(strings.TrimLeft(file, "."), "README", "index"), ".")[0] + ".html"
 			runGenerator(file, out)
 		}
+	}
+	if *commit {
+		tohtml.CommitMessage()
 	}
 }
 

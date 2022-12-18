@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	github "github.com/google/go-github/v45/github"
 	"github.com/russross/blackfriday/v2"
@@ -161,6 +162,17 @@ func License() string {
 	return licensehtml
 }
 
+func folderList() {
+	files, err := ioutil.ReadDir("./")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, f := range files {
+		fmt.Println(f.Name())
+	}
+}
+
 func NavigationBar(files []string, out string) string {
 	count := len(strings.Split(out, "/"))
 	navbar := "<div id=\"navbar\">"
@@ -180,13 +192,13 @@ func NavigationBar(files []string, out string) string {
 			}
 			navbar += "<li><a href=\"" + title + ".html" + "\">" + title + "</a></li>"
 		} else {
-			if !strings.Contains(file, "index") {
-				title := strings.ReplaceAll(file, "README", "index")
-				if title == "README" {
-					title = "index"
-				}
-				navbar += "<li><a href=\"" + title + "\">" + title + "</a></li>"
+			//if file == "index.html" {
+			title := strings.ReplaceAll(file, "README", "index")
+			if title == "README" {
+				title = "index"
 			}
+			navbar += "<li><a href=\"" + title + "\">" + title + "</a></li>"
+			//}
 		}
 	}
 	navbar += "</ul>"
@@ -403,22 +415,25 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 				fmt.Printf("Git Add Error: %s", err)
 				os.Exit(1)
 			}
-			gitCommitCmd := exec.Command("git", "commit", "-am", "update "+out)
-			if out, err := gitCommitCmd.Output(); err != nil {
-				fmt.Printf("Git Commit Error: %s %s", out, err)
-			}
-			if err := enableGithubPage(); err != nil {
-				if strings.Contains(err.Error(), "409") {
-					fmt.Println("Page already exists, skipping")
-				} else if strings.Contains(err.Error(), "GITHUB_TOKEN not set") {
-					fmt.Println("GITHUB_TOKEN not set, skipping")
-				} else {
-					fmt.Printf("Github Pages Error: %s", err)
-				}
-			}
 		}
 	} else {
 		fmt.Println(final)
+	}
+}
+
+func CommitMessage() {
+	gitCommitCmd := exec.Command("git", "commit", "-am", "page generation update for: "+time.Now().String())
+	if out, err := gitCommitCmd.Output(); err != nil {
+		fmt.Printf("Git Commit Error: %s %s", out, err)
+	}
+	if err := enableGithubPage(); err != nil {
+		if strings.Contains(err.Error(), "409") {
+			fmt.Println("Page already exists, skipping")
+		} else if strings.Contains(err.Error(), "GITHUB_TOKEN not set") {
+			fmt.Println("GITHUB_TOKEN not set, skipping")
+		} else {
+			fmt.Printf("Github Pages Error: %s", err)
+		}
 	}
 }
 
