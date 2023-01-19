@@ -107,6 +107,13 @@ func OutputShowHiderCSSTag(cssFile string) string {
 }
 
 func OutputScriptTag(scriptFile string) string {
+	if strings.Contains(scriptFile, ",") {
+		output := ""
+		for _, script := range strings.Split(scriptFile, ",") {
+			output += "		<script type=\"text/javascript\" src=\"" + script + "\"></script>" + "\n"
+		}
+		return output
+	}
 	return "		<script type=\"text/javascript\" src=\"" + scriptFile + "\"></script>" + "\n"
 }
 
