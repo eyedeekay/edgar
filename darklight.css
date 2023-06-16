@@ -1,6 +1,6 @@
 /* edgar darklight CSS file */
 #checkboxDarkLight:checked + .container{
-    background-color: whitesmoke;
+    background-color: black;
     filter: invert(100%);
 }
 #checkboxDarkLight{
