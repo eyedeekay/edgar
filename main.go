@@ -32,8 +32,9 @@ var (
 	donatemessage = flag.String("support", "Support independent development"+myDirectory(), "change message/CTA for donations section.")
 	help          = flag.Bool("help", false, "Show usage.")
 	i2pequiv      = flag.String("i2p-location", "", "An i2p-location http-equiv value")
-	recursive     = flag.Bool("recursive", false, "recurse into subdirectories when listing markdown files and generate pages for all markdown files")
 )
+
+var recursive = os.Getenv("EDGAR_RECURSIVE")
 
 func showHelp() {
 	fmt.Println("Edgar(Everything does get a README): Static Site Generator for the Paradoxically Prolific")
@@ -85,7 +86,7 @@ func listAllMarkdownFiles() string {
 
 	fileList = append(fileList, "README.md")
 
-	if *recursive {
+	if recursive != "" {
 		log.Println("walking dir recursively...")
 		err := filepath.Walk(".",
 			func(path string, file os.FileInfo, err error) error {
