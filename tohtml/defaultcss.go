@@ -77,8 +77,6 @@ iframe {
 }
 
 .container {
-    /*width: 36vw;
-    height: 64vh;*/
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -187,6 +185,9 @@ var ShowHiderCSS = `/* edgar showhider CSS file */
 var DarkLightCSS = `/* edgar darklight CSS file */
 #checkboxDarkLight:checked + .container{
     background-color: black;
+    filter: invert(100%);
+}
+#checkboxDarkLight:checked + .i2plogo{
     filter: invert(100%);
 }
 #checkboxDarkLight:checked {

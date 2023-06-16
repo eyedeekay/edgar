@@ -3,6 +3,9 @@
     background-color: black;
     filter: invert(100%);
 }
+#checkboxDarkLight:checked + .i2plogo{
+    filter: invert(100%);
+}
 #checkboxDarkLight:checked {
     background-color: black;
 }
