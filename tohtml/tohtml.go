@@ -214,7 +214,7 @@ func License() string {
 	licensehtml += "<a href=\"#hide\">Hide license</a>"
 	licensehtml += "</div>"
 	licensehtml += "</div>"
-	licensehtml += "</div>\n"
+	licensehtml += "</div></div>\n"
 	return licensehtml
 }
 
@@ -299,7 +299,7 @@ func I2PLink() string {
 }
 
 func OutputBodyClose() string {
-	return "	</div></body>" + "\n"
+	return "	</body>" + "\n"
 }
 
 func OutputHTMLClose() string {
