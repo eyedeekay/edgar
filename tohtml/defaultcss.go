@@ -183,3 +183,28 @@ var ShowHiderCSS = `/* edgar showhider CSS file */
 #donate:target {display: block; }
 #hidedonate:target {display: none; }
 `
+
+var DarkLightCSS = `/* edgar darklight CSS file */
+#checkboxDarkLight:checked + .container{
+    background-color: whitesmoke;
+    color: darkgrey;
+}
+#checkbox{
+    appearance: none;
+    width: 80px;
+    height: 40px;
+    background: black;
+    border-radius: 22px;
+    cursor: pointer;
+    outline: none;
+}
+#checkbox::before{
+    content: '';
+    width: 40px;
+    height: 35px;
+    background-color:white;
+    border-radius: 35px;
+    cursor: pointer;
+    transition: .3s linear;
+}
+`

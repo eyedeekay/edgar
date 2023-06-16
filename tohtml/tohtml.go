@@ -107,6 +107,29 @@ func OutputShowHiderCSSTag(cssFile string) string {
 	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
 }
 
+func OutputDarkLightCSSTag(cssFile string) string {
+	// cssFile := "darklight.css"
+	if _, err := os.Stat(cssFile); err != nil {
+		err := ioutil.WriteFile(cssFile, []byte(DarkLightCSS), 0644)
+		if err != nil {
+			fmt.Printf("Error writing default CSS file: %s", err)
+		}
+	} else {
+		// check if the phrase: /* edgar default CSS file */ is in the file
+		bytes, err := ioutil.ReadFile(cssFile)
+		if err != nil {
+			fmt.Printf("Error reading CSS file: %s", err)
+		}
+		if strings.Contains(string(bytes), "/* edgar darklight CSS file */") {
+			err := ioutil.WriteFile(cssFile, []byte(ShowHiderCSS), 0644)
+			if err != nil {
+				fmt.Printf("Error writing default CSS file: %s", err)
+			}
+		}
+	}
+	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
+}
+
 func OutputScriptTag(scriptFile string) string {
 	if strings.Contains(scriptFile, ",") {
 		output := ""
@@ -146,7 +169,7 @@ func OutputHeaderClose() string {
 }
 
 func OutputBodyOpen() string {
-	return "<body>" + "\n"
+	return "<body>    <input type=\"checkbox\" id=\"checkboxDarkLight\"><div class=\"container\">" + "\n"
 }
 
 func outputHTMLFromMarkdown(filename string) string {
@@ -276,7 +299,7 @@ func I2PLink() string {
 }
 
 func OutputBodyClose() string {
-	return "	</body>" + "\n"
+	return "	</div></body>" + "\n"
 }
 
 func OutputHTMLClose() string {
@@ -409,6 +432,7 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 	}
 	output += OutputCSSTag(css)
 	output += OutputShowHiderCSSTag("showhider.css")
+	output += OutputDarkLightCSSTag("darklight.css")
 	if script != "" {
 		output += OutputScriptTag(script)
 	}
