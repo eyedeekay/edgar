@@ -240,7 +240,8 @@ func NavigationBar(files []string, out string) string {
 	for _, file := range files {
 		log.Println("checking file for navbar inclusion ", file)
 		if count > 1 {
-			file = strings.Join(strings.Split(file, "/")[count-1:], "/")
+			spl := strings.Split(file, "/")[count-1:]
+			file = strings.Join(spl, "/")
 		}
 		if strings.HasSuffix(file, ".md") {
 			title := strings.Split(strings.ReplaceAll(file, "README", "index"), ".")[0]
