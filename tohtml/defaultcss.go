@@ -209,7 +209,7 @@ var DarkLightCSS = `/* edgar darklight CSS file */
 }
 
 #checkboxDarkLight:checked + a {
-    color: unset;
+    color: blue;
     padding: 1%;
 }
 `

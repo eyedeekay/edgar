@@ -23,6 +23,6 @@
 }
 
 #checkboxDarkLight:checked + a {
-    color: unset;
+    color: blue;
     padding: 1%;
 }
