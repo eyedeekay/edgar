@@ -188,7 +188,7 @@ var DarkLightCSS = `/* edgar darklight CSS file */
     filter: invert(100%);
 }
 #checkboxDarkLight:checked + .i2plogo{
-    filter: invert(100%);
+    filter: invert(0%);
 }
 #checkboxDarkLight:checked {
     background-color: black;
