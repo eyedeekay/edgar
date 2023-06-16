@@ -184,7 +184,7 @@ var ShowHiderCSS = `/* edgar showhider CSS file */
 
 var DarkLightCSS = `/* edgar darklight CSS file */
 #checkboxDarkLight:checked + .container {
-    background-color: black;
+    background-color: #373636;
     filter: invert(100%);
 }
 #checkboxDarkLight:checked {
