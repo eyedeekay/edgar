@@ -187,9 +187,6 @@ var DarkLightCSS = `/* edgar darklight CSS file */
     background-color: #373636;
     filter: invert(100%);
 }
-#checkboxDarkLight:checked {
-    background-color: black;
-}
 #checkboxDarkLight{
     appearance: none;
     width: 80px;
