@@ -524,15 +524,21 @@ func findGithubRepoName() string {
 
 	// trim away the scheme, domain
 	repo := strings.SplitN(string(out), "github.com", 2)[1]
+	log.Println("repo: ", repo)
 
 	// trim away the leading separators
 	repo = strings.TrimLeft(string(repo), "/")
+	log.Println("repo: ", repo)
 	repo = strings.TrimLeft(string(repo), ":")
+	log.Println("repo: ", repo)
 
 	// split at the /
 	repo = strings.Split(string(repo), "/")[1]
+	log.Println("repo: ", repo)
 	repo = strings.Replace(string(repo), "\n", "", -1)
+	log.Println("repo: ", repo)
 	repo = strings.TrimRight(string(repo), ".git")
+	log.Println("repo: ", repo)
 	return repo
 }
 
