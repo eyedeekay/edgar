@@ -121,7 +121,7 @@ func OutputDarkLightCSSTag(cssFile string) string {
 			fmt.Printf("Error reading CSS file: %s", err)
 		}
 		if strings.Contains(string(bytes), "/* edgar darklight CSS file */") {
-			err := ioutil.WriteFile(cssFile, []byte(ShowHiderCSS), 0644)
+			err := ioutil.WriteFile(cssFile, []byte(DarkLightCSS), 0644)
 			if err != nil {
 				fmt.Printf("Error writing default CSS file: %s", err)
 			}
