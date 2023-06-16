@@ -189,7 +189,7 @@ var DarkLightCSS = `/* edgar darklight CSS file */
     background-color: whitesmoke;
     color: darkgrey;
 }
-#checkbox{
+#checkboxDarkLight{
     appearance: none;
     width: 80px;
     height: 40px;
@@ -198,7 +198,7 @@ var DarkLightCSS = `/* edgar darklight CSS file */
     cursor: pointer;
     outline: none;
 }
-#checkbox::before{
+#checkboxDarkLight::before{
     content: '';
     width: 40px;
     height: 35px;
