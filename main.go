@@ -86,6 +86,7 @@ func listAllMarkdownFiles() string {
 	fileList = append(fileList, "README.md")
 
 	if *recursive {
+		log.Println("walking dir recursively...")
 		err := filepath.Walk(".",
 			func(path string, file os.FileInfo, err error) error {
 				if err != nil {
