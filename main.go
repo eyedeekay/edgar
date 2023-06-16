@@ -32,6 +32,7 @@ var (
 	donatemessage = flag.String("support", "Support independent development"+myDirectory(), "change message/CTA for donations section.")
 	help          = flag.Bool("help", false, "Show usage.")
 	i2pequiv      = flag.String("i2p-location", "", "An i2p-location http-equiv value")
+	recursive     = flag.Bool("recursive", false, "recurse into subdirectories when listing markdown files and generate pages for all markdown files")
 )
 
 func showHelp() {
@@ -84,75 +85,104 @@ func listAllMarkdownFiles() string {
 
 	fileList = append(fileList, "README.md")
 
-	for _, file := range files {
-		if !file.IsDir() {
-			if strings.HasSuffix(file.Name(), ".md") {
-				if file.Name() != "README.md" {
-					fileList = append(fileList, file.Name())
+	if *recursive {
+		err := filepath.Walk(".",
+			func(path string, file os.FileInfo, err error) error {
+				if err != nil {
+					return err
 				}
-			} else if strings.HasSuffix(file.Name(), ".html") {
-				mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
-				if _, err := os.Stat(mdExtension); err != nil {
-					fileList = append(fileList, file.Name())
+				if !file.IsDir() {
+					if strings.HasSuffix(file.Name(), ".md") {
+						if file.Name() != "README.md" {
+							fileList = append(fileList, file.Name())
+						}
+					} else if strings.HasSuffix(file.Name(), ".html") {
+						mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+						if _, err := os.Stat(mdExtension); err != nil {
+							fileList = append(fileList, file.Name())
+						}
+					}
+				} else {
+					if _, err := os.Stat(filepath.Join(file.Name(), "index.html")); err == nil {
+						fileList = append(fileList, filepath.Join(file.Name(), "index.html"))
+					}
 				}
-			}
-		} else {
-			if _, err := os.Stat(filepath.Join(file.Name(), "index.html")); err == nil {
-				fileList = append(fileList, filepath.Join(file.Name(), "index.html"))
-			}
-		}
-	}
-	if _, err := os.Stat("docs"); err == nil {
-		docs, err := ioutil.ReadDir("docs")
+				return nil
+			})
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
-		tohtml.OutputCSSTag("docs/style.css")
-		tohtml.OutputShowHiderCSSTag("docs/showhider.css")
-		gitAddCmd := exec.Command("git", "add", "docs/style.css", "docs/showhider.css")
-		if err := gitAddCmd.Run(); err != nil {
-			fmt.Printf("Git Add Error: %s", err)
-			os.Exit(1)
-		}
-		//var fileList []string
-		for _, file := range docs {
+	} else {
+		for _, file := range files {
 			if !file.IsDir() {
-				if strings.HasSuffix(filepath.Join("docs", file.Name()), ".md") {
-					if filepath.Join("docs", file.Name()) != "README.md" {
-						fileList = append(fileList, filepath.Join("docs", file.Name()))
+				if strings.HasSuffix(file.Name(), ".md") {
+					if file.Name() != "README.md" {
+						fileList = append(fileList, file.Name())
 					}
-				} else if strings.HasSuffix(filepath.Join("docs", file.Name()), ".html") {
-					mdExtension := strings.ReplaceAll(filepath.Join("docs", file.Name()), ".html", ".md")
+				} else if strings.HasSuffix(file.Name(), ".html") {
+					mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
 					if _, err := os.Stat(mdExtension); err != nil {
-						fileList = append(fileList, filepath.Join("docs", file.Name()))
+						fileList = append(fileList, file.Name())
+					}
+				}
+			} else {
+				if _, err := os.Stat(filepath.Join(file.Name(), "index.html")); err == nil {
+					fileList = append(fileList, filepath.Join(file.Name(), "index.html"))
+				}
+			}
+		}
+		if _, err := os.Stat("docs"); err == nil {
+			docs, err := ioutil.ReadDir("docs")
+			if err != nil {
+				log.Fatal(err)
+			}
+			tohtml.OutputCSSTag("docs/style.css")
+			tohtml.OutputShowHiderCSSTag("docs/showhider.css")
+			gitAddCmd := exec.Command("git", "add", "docs/style.css", "docs/showhider.css")
+			if err := gitAddCmd.Run(); err != nil {
+				fmt.Printf("Git Add Error: %s", err)
+				os.Exit(1)
+			}
+			//var fileList []string
+			for _, file := range docs {
+				if !file.IsDir() {
+					if strings.HasSuffix(filepath.Join("docs", file.Name()), ".md") {
+						if filepath.Join("docs", file.Name()) != "README.md" {
+							fileList = append(fileList, filepath.Join("docs", file.Name()))
+						}
+					} else if strings.HasSuffix(filepath.Join("docs", file.Name()), ".html") {
+						mdExtension := strings.ReplaceAll(filepath.Join("docs", file.Name()), ".html", ".md")
+						if _, err := os.Stat(mdExtension); err != nil {
+							fileList = append(fileList, filepath.Join("docs", file.Name()))
+						}
 					}
 				}
 			}
 		}
-	}
-	if _, err := os.Stat("doc"); err == nil {
-		docs, err := ioutil.ReadDir("doc")
-		if err != nil {
-			log.Fatal(err)
-		}
-		tohtml.OutputCSSTag("doc/style.css")
-		tohtml.OutputShowHiderCSSTag("doc/showhider.css")
-		gitAddCmd := exec.Command("git", "add", "doc/style.css", "doc/showhider.css")
-		if err := gitAddCmd.Run(); err != nil {
-			fmt.Printf("Git Add Error: %s", err)
-			os.Exit(1)
-		}
-		//var fileList []string
-		for _, file := range docs {
-			if !file.IsDir() {
-				if strings.HasSuffix(filepath.Join("doc", file.Name()), ".md") {
-					if filepath.Join("doc", file.Name()) != "README.md" {
-						fileList = append(fileList, filepath.Join("doc", file.Name()))
-					}
-				} else if strings.HasSuffix(filepath.Join("doc", file.Name()), ".html") {
-					mdExtension := strings.ReplaceAll(filepath.Join("doc", file.Name()), ".html", ".md")
-					if _, err := os.Stat(mdExtension); err != nil {
-						fileList = append(fileList, filepath.Join("doc", file.Name()))
+		if _, err := os.Stat("doc"); err == nil {
+			docs, err := ioutil.ReadDir("doc")
+			if err != nil {
+				log.Fatal(err)
+			}
+			tohtml.OutputCSSTag("doc/style.css")
+			tohtml.OutputShowHiderCSSTag("doc/showhider.css")
+			gitAddCmd := exec.Command("git", "add", "doc/style.css", "doc/showhider.css")
+			if err := gitAddCmd.Run(); err != nil {
+				fmt.Printf("Git Add Error: %s", err)
+				os.Exit(1)
+			}
+			//var fileList []string
+			for _, file := range docs {
+				if !file.IsDir() {
+					if strings.HasSuffix(filepath.Join("doc", file.Name()), ".md") {
+						if filepath.Join("doc", file.Name()) != "README.md" {
+							fileList = append(fileList, filepath.Join("doc", file.Name()))
+						}
+					} else if strings.HasSuffix(filepath.Join("doc", file.Name()), ".html") {
+						mdExtension := strings.ReplaceAll(filepath.Join("doc", file.Name()), ".html", ".md")
+						if _, err := os.Stat(mdExtension); err != nil {
+							fileList = append(fileList, filepath.Join("doc", file.Name()))
+						}
 					}
 				}
 			}
