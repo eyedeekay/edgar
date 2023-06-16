@@ -240,6 +240,7 @@ func NavigationBar(files []string, out string) string {
 	for _, file := range files {
 		log.Println("checking file for navbar inclusion ", file)
 		if count > 1 {
+			log.Println("count, file", count, file)
 			spl := strings.Split(file, "/")[count-1:]
 			file = strings.Join(spl, "/")
 		}
