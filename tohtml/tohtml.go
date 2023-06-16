@@ -238,6 +238,7 @@ func NavigationBar(files []string, out string) string {
 	navbar += "<ul>"
 	navbar += "<li><a href=\"" + ".." + "\">" + "Up one level ^" + "</a></li>"
 	for _, file := range files {
+		log.Println("checking file for navbar inclusion ", file)
 		if count > 1 {
 			file = strings.Join(strings.Split(file, "/")[count-1:], "/")
 		}
