@@ -183,12 +183,15 @@ var ShowHiderCSS = `/* edgar showhider CSS file */
 `
 
 var DarkLightCSS = `/* edgar darklight CSS file */
-#checkboxDarkLight:checked + .container{
+#checkboxDarkLight:checked + .container {
     background-color: black;
     filter: invert(100%);
 }
-#checkboxDarkLight:checked + .i2plogo{
-    filter: invert(0%);
+#checkboxDarkLight:checked + .i2plogo {
+    filter: invert();
+}
+#checkboxDarkLight:checked + img {
+    filter: invert();
 }
 #checkboxDarkLight:checked {
     background-color: black;
@@ -211,4 +214,5 @@ var DarkLightCSS = `/* edgar darklight CSS file */
     cursor: pointer;
     transition: .3s linear;
 }
+
 `
