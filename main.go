@@ -96,7 +96,7 @@ func listAllMarkdownFiles() string {
 				if !file.IsDir() {
 					log.Println("recursing to path", path)
 					if strings.HasSuffix(path, ".md") {
-						if file.Name() != "README.md" {
+						if path != "README.md" {
 							fileList = append(fileList, filepath.Join(path))
 						}
 					} else if strings.HasSuffix(file.Name(), ".html") {
