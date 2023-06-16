@@ -92,6 +92,7 @@ func listAllMarkdownFiles() string {
 					return err
 				}
 				if !file.IsDir() {
+					log.Println(file.Name())
 					if strings.HasSuffix(file.Name(), ".md") {
 						if file.Name() != "README.md" {
 							fileList = append(fileList, filepath.Join(path, file.Name()))
