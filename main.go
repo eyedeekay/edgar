@@ -94,20 +94,20 @@ func listAllMarkdownFiles() string {
 					return err
 				}
 				if !file.IsDir() {
-					log.Println(file.Name())
-					if strings.HasSuffix(file.Name(), ".md") {
+					log.Println(path)
+					if strings.HasSuffix(path, ".md") {
 						if file.Name() != "README.md" {
-							fileList = append(fileList, filepath.Join(path, file.Name()))
+							fileList = append(fileList, filepath.Join(path))
 						}
 					} else if strings.HasSuffix(file.Name(), ".html") {
 						mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
 						if _, err := os.Stat(mdExtension); err != nil {
-							fileList = append(fileList, filepath.Join(path, file.Name()))
+							fileList = append(fileList, filepath.Join(path))
 						}
 					}
 				} else {
-					if _, err := os.Stat(filepath.Join(file.Name(), "index.html")); err == nil {
-						fileList = append(fileList, filepath.Join(filepath.Join(path, file.Name()), "index.html"))
+					if _, err := os.Stat(filepath.Join(path, "index.html")); err == nil {
+						fileList = append(fileList, filepath.Join(path, "index.html"))
 					}
 				}
 				return nil
