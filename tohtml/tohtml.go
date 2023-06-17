@@ -440,7 +440,7 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 	if i2pequiv != "" {
 		output += OutputMetaEquiv("i2p-location", i2pequiv)
 	}
-	output += OutputCSSTag(css)
+	output += OutputCSSTag(filepath.Join(dir, css))
 	output += OutputShowHiderCSSTag(filepath.Join(dir, "showhider.css"))
 	output += OutputDarkLightCSSTag(filepath.Join(dir, "darklight.css"))
 	if script != "" {
