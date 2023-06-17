@@ -304,7 +304,7 @@ func I2PLink(dir string) string {
 	if err := gitAddCmd.Run(); err != nil {
 		fmt.Printf("Git Add Error: %s", err)
 	}
-	return "	<div><a href=\"https://geti2p.net/\"><img class=\"i2plogo\" src=\"" + i2plogopath + "\"></img>I2P</a></div>\n"
+	return "	<div><a href=\"https://geti2p.net/\"><img class=\"i2plogo\" src=\"" + filepath.Base(i2plogopath) + "\"></img>I2P</a></div>\n"
 }
 
 func OutputBodyClose() string {
