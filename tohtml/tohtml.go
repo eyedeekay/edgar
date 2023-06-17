@@ -282,8 +282,8 @@ func Snowflake() string {
 //go:embed I2Plogotoopiebanner.png
 var logo embed.FS
 
-func I2PLink() string {
-	i2plogopath := "i2plogo.png"
+func I2PLink(dir string) string {
+	i2plogopath := filepath.Join(dir, "i2plogo.png")
 	file, err := logo.Open("I2Plogotoopiebanner.png")
 	if err != nil {
 		fmt.Printf("Error opening logo: %s", err)
@@ -459,7 +459,7 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 		output += Snowflake()
 	}
 	if i2plink {
-		output += I2PLink()
+		output += I2PLink(dir)
 	}
 	output += OutputBodyClose()
 	output += OutputHTMLClose()
