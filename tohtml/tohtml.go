@@ -429,6 +429,7 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 		return
 	}
 	fmt.Println("Converting", file, "to", out)
+	dir := filepath.Dir(file)
 	filesList := strings.Split(filename, ",")
 	output := OutputHTMLOpen()
 	output += OutputHeaderOpen()
@@ -440,8 +441,8 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 		output += OutputMetaEquiv("i2p-location", i2pequiv)
 	}
 	output += OutputCSSTag(css)
-	output += OutputShowHiderCSSTag("showhider.css")
-	output += OutputDarkLightCSSTag("darklight.css")
+	output += OutputShowHiderCSSTag(filepath.Join(dir, "showhider.css"))
+	output += OutputDarkLightCSSTag(filepath.Join(dir, "darklight.css"))
 	if script != "" {
 		output += OutputScriptTag(script)
 	}
