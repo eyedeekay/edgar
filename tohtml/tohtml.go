@@ -480,7 +480,7 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 		if err != nil {
 			fmt.Printf("Git not installed \n %s\n", err)
 		} else {
-			gitAddCmd := exec.Command("git", "add", out, ".nojekyll", css, filepath.Join(dir, "darklight.css"), filepath.Join(dir, "showhider.css"))
+			gitAddCmd := exec.Command("git", "add", "-v", out, ".nojekyll", css, filepath.Join(dir, "darklight.css"), filepath.Join(dir, "showhider.css"))
 			if err := gitAddCmd.Run(); err != nil {
 				fmt.Printf("Git Add Error: %s", err)
 				os.Exit(1)
