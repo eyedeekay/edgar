@@ -81,7 +81,7 @@ func OutputCSSTag(cssFile string) string {
 			}
 		}
 	}
-	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
+	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + filepath.Base(cssFile) + "\" />" + "\n"
 }
 
 func OutputShowHiderCSSTag(cssFile string) string {
@@ -104,7 +104,7 @@ func OutputShowHiderCSSTag(cssFile string) string {
 			}
 		}
 	}
-	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
+	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + filepath.Base(cssFile) + "\" />" + "\n"
 }
 
 func OutputDarkLightCSSTag(cssFile string) string {
@@ -127,7 +127,7 @@ func OutputDarkLightCSSTag(cssFile string) string {
 			}
 		}
 	}
-	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssFile + "\" />" + "\n"
+	return "		<link rel=\"stylesheet\" type=\"text/css\" href=\"" + filepath.Base(cssFile) + "\" />" + "\n"
 }
 
 func OutputScriptTag(scriptFile string) string {
