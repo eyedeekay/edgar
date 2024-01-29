@@ -11,7 +11,7 @@ version:
 
 upload:
 	CGO_ENABLED=0 go build -o $(packagename)
-	github-release upload -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -f "$(packagename)" -l "`sha256sum $(packagename)`"
+	github-release upload -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -f "$(packagename)" -l "`sha256sum $(packagename)`" -name "$(packagename)"
 
 del:
 	github-release delete -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION)
