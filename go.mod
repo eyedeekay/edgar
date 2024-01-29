@@ -3,6 +3,7 @@ module github.com/eyedeekay/edgar
 go 1.18
 
 require (
+	github.com/github-release/github-release v0.10.0
 	github.com/google/go-github/v45 v45.2.0
 	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
@@ -12,6 +13,8 @@ require (
 require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/kevinburke/rest v0.0.0-20231107185522-a9c371f90234 // indirect
+	github.com/tomnomnom/linkheader v0.0.0-20180905144013-02ca5825eb80 // indirect
 	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect

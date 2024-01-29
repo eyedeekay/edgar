@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -64,7 +63,7 @@ func myDirectory() string {
 }
 
 func listAllMarkdownFiles() string {
-	files, err := ioutil.ReadDir(".")
+	files, err := os.ReadDir(".")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -72,13 +71,13 @@ func listAllMarkdownFiles() string {
 	var fileList []string
 
 	if _, err := os.Stat("README.md"); err != nil {
-		err = ioutil.WriteFile("README.md", []byte(tohtml.OpenDirectory()), 0644)
+		err = os.WriteFile("README.md", []byte(tohtml.OpenDirectory()), 0644)
 		if err != nil {
 			panic(err)
 		}
 	}
 	if tohtml.IsOpenDirectory("README.md") {
-		err = ioutil.WriteFile("README.md", []byte(tohtml.OpenDirectory()), 0644)
+		err = os.WriteFile("README.md", []byte(tohtml.OpenDirectory()), 0644)
 		if err != nil {
 			panic(err)
 		}
@@ -135,7 +134,7 @@ func listAllMarkdownFiles() string {
 			}
 		}
 		if _, err := os.Stat("docs"); err == nil {
-			docs, err := ioutil.ReadDir("docs")
+			docs, err := os.ReadDir("docs")
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -163,7 +162,7 @@ func listAllMarkdownFiles() string {
 			}
 		}
 		if _, err := os.Stat("doc"); err == nil {
-			docs, err := ioutil.ReadDir("doc")
+			docs, err := os.ReadDir("doc")
 			if err != nil {
 				log.Fatal(err)
 			}
