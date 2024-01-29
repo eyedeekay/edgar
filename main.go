@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/eyedeekay/edgar/github"
 	"github.com/eyedeekay/edgar/tohtml"
 )
 
@@ -244,4 +245,13 @@ func main() {
 
 func runGenerator(file, out string) {
 	tohtml.RunGenerator(file, out, *filename, *title, *author, *css, *script, *donate, *donatemessage, *nodonate, *snowflake, *i2plink, *i2pequiv)
+	// get the name of the current directory
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = github.DownloadLatestReleaseAssets(*author, currentDir, *author, *author)
+	if err != nil {
+		log.Println(err)
+	}
 }

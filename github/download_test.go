@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-/*func TestReleases(t *testing.T) {
+func TestReleases(t *testing.T) {
 	releases, err := Releases("eyedeekay", "i2p.firefox", "eyedeekay", "eyedeekay")
 	if err != nil {
 		t.Error(err)
@@ -26,7 +26,7 @@ func TestLatestRelease(t *testing.T) {
 	}
 	t.Log("Latest Release")
 	t.Log(releases)
-}*/
+}
 
 func TestDownloadReleaseAssets(t *testing.T) {
 	release, err := LatestRelease("eyedeekay", "i2p.firefox", "eyedeekay", "eyedeekay")
