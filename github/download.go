@@ -52,6 +52,7 @@ const (
 )
 
 func Releases(user, repo, authUser, token string) ([]Release, error) {
+	log.Println("releases", user, repo)
 	var releases []Release
 	client := github.NewClient(authUser, token, nil)
 	client.SetBaseURL(EnvApiEndpoint)
