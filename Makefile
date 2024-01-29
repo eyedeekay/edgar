@@ -10,6 +10,7 @@ version:
 	github-release release -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -d "version $(VERSION)"
 
 upload:
+	CGO_ENABLED=0 go build -o $(packagename)
 	github-release upload -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -f "$(packagename)" -l "`sha256sum $(packagename)`"
 
 del:
