@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -79,6 +80,7 @@ func downloadBytes(url, dest string) ([]byte, error) {
 }
 
 func downloadFile(url, dest string) error {
+	log.Println("downloading to", dest)
 	if _, err := os.Stat(dest); err == nil {
 		// move the file out of the way to dest.$date.bak
 		date := time.Now().Format("20060102")
@@ -100,6 +102,7 @@ func downloadFile(url, dest string) error {
 	}
 	if _, ok := jsonMap["browser_download_url"]; ok {
 		downloadUrl := jsonMap["browser_download_url"].(string)
+		log.Println("downloading from", downloadUrl)
 		resp, err := http.Get(downloadUrl)
 		if err != nil {
 			return err
