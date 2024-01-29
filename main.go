@@ -238,13 +238,6 @@ func main() {
 			runGenerator(file, out)
 		}
 	}
-	if *commit {
-		tohtml.CommitMessage()
-	}
-}
-
-func runGenerator(file, out string) {
-	tohtml.RunGenerator(file, out, *filename, *title, *author, *css, *script, *donate, *donatemessage, *nodonate, *snowflake, *i2plink, *i2pequiv)
 	// get the name of the current directory
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -254,4 +247,11 @@ func runGenerator(file, out string) {
 	if err != nil {
 		log.Println(err)
 	}
+	if *commit {
+		tohtml.CommitMessage()
+	}
+}
+
+func runGenerator(file, out string) {
+	tohtml.RunGenerator(file, out, *filename, *title, *author, *css, *script, *donate, *donatemessage, *nodonate, *snowflake, *i2plink, *i2pequiv)
 }
