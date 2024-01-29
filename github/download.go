@@ -63,6 +63,9 @@ func Releases(user, repo, authUser, token string) ([]Release, error) {
 
 func LatestRelease(user, repo, authUser, token string) (Release, error) {
 	releases, err := Releases(user, repo, authUser, token)
+	if err != nil {
+		return Release{}, err
+	}
 	return releases[0], err
 }
 
@@ -114,6 +117,9 @@ func downloadFile(url, dest string) error {
 }
 
 func DownloadReleaseAssets(release Release) ([]Asset, error) {
+	if len(release.Assets) == 0 {
+		return nil, fmt.Errorf("No assets found")
+	}
 	for i := range release.Assets {
 		downloadFile(release.Assets[i].Url, release.Assets[i].Name)
 	}
