@@ -23,6 +23,7 @@ var (
 	commit    = flag.Bool("checkin", true, "commit page generation changes after running")
 	snowflake = flag.Bool("snowflake", true, "add a snowflake to the page footer")
 	i2plink   = flag.Bool("i2plink", true, "add an i2p link to the page footer. Logo courtesy of @Shoalsteed and @mark22k")
+	mirror    = flag.String("mirror", "", "Use edgar to download all github repos with pages activated to the current directory")
 	nodonate  = flag.Bool("nodonate", true, "disable the donate section(change the -donate wallet addresses before setting this to true)")
 	donate    = flag.String(
 		"donate",
@@ -220,6 +221,9 @@ func main() {
 	if *help {
 		showHelp()
 		return
+	}
+	if *mirror != "" {
+		github.Mirror(*author, "")
 	}
 	filesList := strings.Split(*filename, ",")
 	if *title == "" {

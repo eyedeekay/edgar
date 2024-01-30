@@ -16,10 +16,3 @@ func TestListAllRepos(t *testing.T) {
 		t.Log(i, ": ", *repo.SSHURL)
 	}
 }
-
-func TestCloneAllRepos(t *testing.T) {
-	err := CloneAllRepos("eyedeekay", "")
-	if err != nil {
-		t.Error(err)
-	}
-}

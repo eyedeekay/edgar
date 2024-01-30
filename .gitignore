@@ -17,3 +17,4 @@ edgar
 *.bak
 *.zip
 *.tar.gz
+github/*/
