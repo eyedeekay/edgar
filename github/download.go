@@ -81,6 +81,9 @@ func LatestRelease(user, repo, authUser, token string) (Release, error) {
 	if err != nil {
 		return Release{}, err
 	}
+	if len(releases) == 0 {
+		return Release{}, fmt.Errorf("No releases found")
+	}
 	return releases[0], err
 }
 
