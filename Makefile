@@ -7,7 +7,7 @@ echo: fmt
 	@echo "type make version to do release $(VERSION)"
 
 version:
-	github-release release -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -d "version $(VERSION)"
+	github-release release -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -d "version $(VERSION)"; sleep 3s
 
 upload:
 	CGO_ENABLED=0 go build -o $(packagename)
