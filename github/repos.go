@@ -33,10 +33,10 @@ func ListAllRepos(user, token string) ([]*github.Repository, error) {
 		}
 		for _, repo := range triage {
 			if repo.GetHasPages() {
-				repos = append(repos, repo)	
+				repos = append(repos, repo)
 			}
 		}
-		if (count == len(repos)){
+		if count == len(repos) {
 			break
 		}
 		count = len(repos)
@@ -63,7 +63,7 @@ func CloneAllRepos(user, token string) error {
 		Progress: os.Stdout,
 	})
 	if cloneerr != nil {
-		cloneurl=true
+		cloneurl = true
 	}
 	for _, repo := range allRepos {
 		var err error
@@ -71,8 +71,8 @@ func CloneAllRepos(user, token string) error {
 			_, err = git.PlainClone(repo.GetName(), false, &git.CloneOptions{
 				URL:      *repo.CloneURL,
 				Progress: os.Stdout,
-			})	
-		}else{
+			})
+		} else {
 			_, err = git.PlainClone(repo.GetName(), false, &git.CloneOptions{
 				URL:      *repo.SSHURL,
 				Progress: os.Stdout,
