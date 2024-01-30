@@ -5,7 +5,7 @@ import (
 )
 
 func TestReleases(t *testing.T) {
-	releases, err := Releases("eyedeekay", "i2p.firefox", "eyedeekay", "eyedeekay")
+	releases, err := Releases("eyedeekay", "i2p.firefox", "eyedeekay", "")
 	if err != nil {
 		t.Error(err)
 	}
@@ -20,7 +20,7 @@ func TestReleases(t *testing.T) {
 }
 
 func TestLatestRelease(t *testing.T) {
-	releases, err := LatestRelease("eyedeekay", "i2p.firefox", "eyedeekay", "eyedeekay")
+	releases, err := LatestRelease("eyedeekay", "i2p.firefox", "eyedeekay", "")
 	if err != nil {
 		t.Error(err)
 	}
@@ -29,7 +29,7 @@ func TestLatestRelease(t *testing.T) {
 }
 
 func TestDownloadReleaseAssets(t *testing.T) {
-	release, err := LatestRelease("eyedeekay", "i2p.firefox", "eyedeekay", "eyedeekay")
+	release, err := LatestRelease("eyedeekay", "i2p.firefox", "eyedeekay", "")
 	if err != nil {
 		t.Error(err)
 	}

@@ -53,6 +53,7 @@ const (
 
 func Releases(user, repo, authUser, token string) ([]Release, error) {
 	if token == "" {
+		log.Println("API token taken from environment")
 		token = EnvToken
 	}
 	if user == "" {
