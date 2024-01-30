@@ -52,6 +52,18 @@ const (
 )
 
 func Releases(user, repo, authUser, token string) ([]Release, error) {
+	if token == "" {
+		token = EnvToken
+	}
+	if user == "" {
+		user = EnvUser
+	}
+	if repo == "" {
+		repo = EnvRepo
+	}
+	if authUser == "" {
+		authUser = EnvAuthUser
+	}
 	log.Println("releases", user, repo)
 	var releases []Release
 	client := github.NewClient(authUser, token, nil)

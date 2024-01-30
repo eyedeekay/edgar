@@ -244,7 +244,7 @@ func main() {
 		log.Fatal(err)
 	}
 	currentDir = filepath.Base(currentDir)
-	_, err = github.DownloadLatestReleaseAssets(*author, currentDir, *author, *author)
+	_, err = github.DownloadLatestReleaseAssets(*author, currentDir, *author, "")
 	if err != nil {
 		log.Println(err)
 	}
