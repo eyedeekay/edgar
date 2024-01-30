@@ -9,6 +9,7 @@ Basically, a really simple static site generator that take a directory full of m
 reasonable-looking HTML pages for them.
 
 ```sh
+rm -f edgar
 wget https://github.com/eyedeekay/edgar/releases/download/v0.33.9/edgar
 sudo cp edgar /usr/bin/edgar
 sudo chmod +x /usr/bin/edgar
