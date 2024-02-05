@@ -14,7 +14,7 @@ version:
 	github-release release -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -d "version $(VERSION)"; sleep 3s
 
 upload: bin
-	github-release upload -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -f "$(packagename)" -l "`sha256sum $(packagename)`" -n "$(packagename)"
+	github-release upload --replace -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -f "$(packagename)" -l "`sha256sum $(packagename)`" -n "$(packagename)"
 
 del:
 	github-release delete -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION)

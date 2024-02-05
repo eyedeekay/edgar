@@ -223,7 +223,7 @@ func main() {
 		return
 	}
 	if *mirror != "" {
-		github.Mirror(*author, "")
+		github.Mirror(*mirror, "")
 	}
 	filesList := strings.Split(*filename, ",")
 	if *title == "" {
