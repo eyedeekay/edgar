@@ -10,7 +10,7 @@ reasonable-looking HTML pages for them.
 
 ```sh
 rm -f edgar
-wget https://github.com/eyedeekay/edgar/releases/download/v0.34.3/edgar
+wget https://github.com/eyedeekay/edgar/releases/download/v0.34.4/edgar
 sudo cp edgar /usr/bin/edgar
 sudo chmod +x /usr/bin/edgar
 ```
