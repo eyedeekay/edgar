@@ -1,6 +1,6 @@
 
 USER_GH=eyedeekay
-VERSION=0.34.2
+VERSION=0.34.3
 packagename=edgar
 
 echo: fmt

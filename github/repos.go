@@ -205,6 +205,8 @@ func mirror(repo *github.Repository) error {
 	Command := exec.Command(self)
 	Command.Dir = repo.GetName()
 	Command.Env = os.Environ()
+	Command.Env = append(Command.Env, "GITHUB_USER="+EnvUser)
+	Command.Env = append(Command.Env, "GITHUB_TOKEN="+EnvToken)
 	out, err := Command.CombinedOutput()
 	if err != nil {
 		return err
