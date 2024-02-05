@@ -21,7 +21,7 @@ var (
 	script    = flag.String("script", hasScript(), "The script file to use.")
 	title     = flag.String("title", "", "The title of the HTML file, if blank it will be generated from the first h1 in the markdown file.")
 	outfile   = flag.String("out", "index.html", "The name of the output file(Only used for the first file, others will be named `inputfile.html`)")
-	commit    = flag.Bool("checkin", true, "commit page generation changes after running")
+	commit    = flag.Bool("checkin", false, "commit page generation changes after running")
 	snowflake = flag.Bool("snowflake", true, "add a snowflake to the page footer")
 	i2plink   = flag.Bool("i2plink", true, "add an i2p link to the page footer. Logo courtesy of @Shoalsteed and @mark22k")
 	mirror    = flag.String("mirror", "", "Use edgar to download all github repos with pages activated to the current directory")
@@ -34,7 +34,7 @@ var (
 	donatemessage = flag.String("support", "Support independent development"+myDirectory(), "change message/CTA for donations section.")
 	help          = flag.Bool("help", false, "Show usage.")
 	i2pequiv      = flag.String("i2p-location", "", "An i2p-location http-equiv value")
-	wsHost = flag.String("webseed-host", "http://idk.i2p", "The webseed host for torrent-based mirrors")
+	wsHost        = flag.String("webseed-host", "http://idk.i2p", "The webseed host for torrent-based mirrors")
 )
 
 var recursive = os.Getenv("EDGAR_RECURSIVE")
@@ -260,10 +260,10 @@ func main() {
 			PieceLength: 256,
 			Name:        file,
 			RootDir:     currentDir,
-			Output:      file+".torrent",
+			Output:      file + ".torrent",
 			Comment:     "",
 			Announces:   []string{"http://w7tpbzncbcocrqtwwm3nezhnnsw4ozadvi2hmvzdhrqzfxfum7wa.b32.i2p/a"},
-			WebSeeds:    []string{*wsHost+"/"+"/"+file},
+			WebSeeds:    []string{*wsHost + "/" + currentDir + "/" + file},
 			NoDate:      true,
 		})
 		if err != nil {

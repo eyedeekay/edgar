@@ -96,7 +96,7 @@ func downloadBytes(url string) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
-func downloadFile(url, dest string) (string,error) {
+func downloadFile(url, dest string) (string, error) {
 	log.Println("downloading to", dest)
 	if _, err := os.Stat(dest); err == nil {
 		// move the file out of the way to dest.$date.bak
