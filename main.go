@@ -256,7 +256,7 @@ func main() {
 	}
 	for _, file := range files {
 		log.Println("Generating torrent for:", file)
-		torrent.CreateTorrent(torrent.CreateTorrentConfig{
+		err := torrent.CreateTorrent(torrent.CreateTorrentConfig{
 			PieceLength: 256,
 			Name:        file,
 			RootDir:     currentDir,
@@ -266,6 +266,9 @@ func main() {
 			WebSeeds:    []string{*wsHost+"/"+"/"+file},
 			NoDate:      true,
 		})
+		if err != nil {
+			log.Println(err)
+		}
 	}
 	if *commit {
 		tohtml.CommitMessage()
