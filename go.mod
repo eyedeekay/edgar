@@ -7,6 +7,7 @@ require (
 	github.com/google/go-github/v45 v45.2.0
 	github.com/google/go-github/v58 v58.0.0
 	github.com/russross/blackfriday/v2 v2.1.0
+	github.com/xgfone/go-bt v0.6.0
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
 	golang.org/x/oauth2 v0.6.0
 	gopkg.in/src-d/go-git.v4 v4.13.1

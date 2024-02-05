@@ -28,7 +28,7 @@ func ListAllRepos(user, token string) ([]*github.Repository, error) {
 	triage, _, err := client.Repositories.ListByUser(ctx, user, opt)
 	page := 0
 	count := -1
-	timeout := 0 
+	timeout := 0
 	for len(triage) > 0 {
 		log.Println("Gathered:", len(repos), "Repositories", page)
 		opt := &github.RepositoryListByUserOptions{Type: "public", ListOptions: github.ListOptions{PerPage: 100, Page: page}}
