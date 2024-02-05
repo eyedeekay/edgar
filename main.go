@@ -261,7 +261,7 @@ func main() {
 			RootDir:     currentDir,
 			Output:      file+".torrent",
 			Comment:     "",
-			Announces:   []string{""},
+			Announces:   []string{"http://w7tpbzncbcocrqtwwm3nezhnnsw4ozadvi2hmvzdhrqzfxfum7wa.b32.i2p/a"},
 			WebSeeds:    []string{*wsHost+"/"+"/"+file},
 			NoDate:      true,
 		})
