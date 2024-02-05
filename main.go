@@ -255,6 +255,7 @@ func main() {
 		log.Println(err)
 	}
 	for _, file := range files {
+		log.Println("Generating torrent for:", file)
 		torrent.CreateTorrent(torrent.CreateTorrentConfig{
 			PieceLength: 256,
 			Name:        file,

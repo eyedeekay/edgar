@@ -87,7 +87,7 @@ func LatestRelease(user, repo, authUser, token string) (Release, error) {
 	return releases[0], err
 }
 
-func downloadBytes(url, dest string) ([]byte, error) {
+func downloadBytes(url string) ([]byte, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ func downloadFile(url, dest string) (string,error) {
 			return "", err
 		}
 	}
-	jsonBytes, err := downloadBytes(url, dest)
+	jsonBytes, err := downloadBytes(url)
 	if err != nil {
 		return "", err
 	}
@@ -117,9 +117,10 @@ func downloadFile(url, dest string) (string,error) {
 	if err != nil {
 		return "", err
 	}
+	log.Println(jsonMap)
 	if _, ok := jsonMap["browser_download_url"]; ok {
 		downloadUrl := jsonMap["browser_download_url"].(string)
-		log.Println("downloading from", downloadUrl)
+		log.Println("downloading from", downloadUrl, "to", dest)
 		resp, err := http.Get(downloadUrl)
 		if err != nil {
 			return "", err
@@ -131,7 +132,7 @@ func downloadFile(url, dest string) (string,error) {
 		}
 		defer out.Close()
 		_, err = io.Copy(out, resp.Body)
-		return out.Name(), err
+		return dest, err
 	}
 	return "", err
 }
@@ -149,6 +150,7 @@ func DownloadReleaseAssets(release Release) ([]string, error) {
 		}
 		names = append(names, name)
 	}
+	log.Println("Downloaded", names, "assets")
 	return names, nil
 }
 

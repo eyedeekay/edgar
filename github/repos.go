@@ -76,7 +76,7 @@ func CloneAllRepos(user, token string, mirroring bool) ([]*github.Repository, er
 	cloned = 0
 	count = 0
 	for _, repo := range allRepos {
-		for count > 15 {
+		for count > 1 {
 			// don't clone more than 15 at a time.
 			// After all the small ones are cloned the last queue will pretty much only be really big ones.
 			log.Println("Sleeping until the queue opens up")
@@ -105,6 +105,7 @@ func clone(repo *github.Repository, cloneurl, mirroring bool) {
 		_, err := git.PlainClone(repo.GetName(), false, &git.CloneOptions{
 			URL:      *repo.CloneURL,
 			Progress: os.Stdout,
+			SingleBranch: true,
 		})
 		if err != nil {
 			log.Println(err)
@@ -120,6 +121,7 @@ func clone(repo *github.Repository, cloneurl, mirroring bool) {
 		_, err := git.PlainClone(repo.GetName(), false, &git.CloneOptions{
 			URL:      *repo.SSHURL,
 			Progress: os.Stdout,
+			SingleBranch: true,
 		})
 		if err != nil {
 			log.Println(err)
@@ -148,7 +150,7 @@ func mirror(repo *github.Repository) error {
 	if err != nil {
 		return err
 	}
-	log.Println("Mirroring:", repo.GetName(), self)
+	log.Println("Mirroring:", repo.GetName(), "with", self)
 	Command := exec.Command(self)
 	Command.Dir = repo.GetName()
 	Command.Env = os.Environ()
