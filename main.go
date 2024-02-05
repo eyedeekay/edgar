@@ -11,6 +11,7 @@ import (
 
 	"github.com/eyedeekay/edgar/github"
 	"github.com/eyedeekay/edgar/tohtml"
+	"github.com/eyedeekay/edgar/torrent"
 )
 
 var (
@@ -33,6 +34,7 @@ var (
 	donatemessage = flag.String("support", "Support independent development"+myDirectory(), "change message/CTA for donations section.")
 	help          = flag.Bool("help", false, "Show usage.")
 	i2pequiv      = flag.String("i2p-location", "", "An i2p-location http-equiv value")
+	wsHost = flag.String("webseed-host", "http://idk.i2p", "The webseed host for torrent-based mirrors")
 )
 
 var recursive = os.Getenv("EDGAR_RECURSIVE")
@@ -248,9 +250,21 @@ func main() {
 		log.Fatal(err)
 	}
 	currentDir = filepath.Base(currentDir)
-	_, err = github.DownloadLatestReleaseAssets(*author, currentDir, *author, "")
+	files, err := github.DownloadLatestReleaseAssets(*author, currentDir, *author, "")
 	if err != nil {
 		log.Println(err)
+	}
+	for _, file := range files {
+		torrent.CreateTorrent(torrent.CreateTorrentConfig{
+			PieceLength: 256,
+			Name:        file,
+			RootDir:     currentDir,
+			Output:      file+".torrent",
+			Comment:     "",
+			Announces:   []string{""},
+			WebSeeds:    []string{*wsHost+"/"+"/"+file},
+			NoDate:      true,
+		})
 	}
 	if *commit {
 		tohtml.CommitMessage()

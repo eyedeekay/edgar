@@ -96,7 +96,7 @@ func downloadBytes(url, dest string) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
-func downloadFile(url, dest string) error {
+func downloadFile(url, dest string) (string,error) {
 	log.Println("downloading to", dest)
 	if _, err := os.Stat(dest); err == nil {
 		// move the file out of the way to dest.$date.bak
@@ -104,49 +104,55 @@ func downloadFile(url, dest string) error {
 		bakDest := fmt.Sprintf("%s.%s.bak", dest, date)
 		err := os.Rename(dest, bakDest)
 		if err != nil {
-			return err
+			return "", err
 		}
 	}
 	jsonBytes, err := downloadBytes(url, dest)
 	if err != nil {
-		return err
+		return "", err
 	}
 	// marshal the json into a map
 	var jsonMap map[string]interface{}
 	err = json.Unmarshal(jsonBytes, &jsonMap)
 	if err != nil {
-		return err
+		return "", err
 	}
 	if _, ok := jsonMap["browser_download_url"]; ok {
 		downloadUrl := jsonMap["browser_download_url"].(string)
 		log.Println("downloading from", downloadUrl)
 		resp, err := http.Get(downloadUrl)
 		if err != nil {
-			return err
+			return "", err
 		}
 		defer resp.Body.Close()
 		out, err := os.Create(dest)
 		if err != nil {
-			return err
+			return "", err
 		}
 		defer out.Close()
 		_, err = io.Copy(out, resp.Body)
-		return err
+		return out.Name(), err
 	}
-	return nil
+	return "", err
 }
 
-func DownloadReleaseAssets(release Release) ([]Asset, error) {
+func DownloadReleaseAssets(release Release) ([]string, error) {
 	if len(release.Assets) == 0 {
 		return nil, fmt.Errorf("No assets found")
 	}
+	var names []string
 	for i := range release.Assets {
-		downloadFile(release.Assets[i].Url, release.Assets[i].Name)
+		name, err := downloadFile(release.Assets[i].Url, release.Assets[i].Name)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		names = append(names, name)
 	}
-	return release.Assets, nil
+	return names, nil
 }
 
-func DownloadLatestReleaseAssets(user, repo, authUser, token string) ([]Asset, error) {
+func DownloadLatestReleaseAssets(user, repo, authUser, token string) ([]string, error) {
 	release, err := LatestRelease(user, repo, authUser, token)
 	if err != nil {
 		return nil, err
