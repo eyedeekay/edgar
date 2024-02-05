@@ -88,8 +88,8 @@ func CloneAllRepos(user, token string, mirroring bool) ([]*github.Repository, er
 	cloned = 0
 	count = 0
 	for _, repo := range allRepos {
-		for count > 3 {
-			// don't clone more than 15 at a time.
+		for count > 5 {
+			// don't clone more than 5 at a time.
 			// After all the small ones are cloned the last queue will pretty much only be really big ones.
 			log.Println("Sleeping until the queue opens up")
 			time.Sleep(time.Second * 10)
