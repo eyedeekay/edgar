@@ -61,6 +61,7 @@ func ListAllRepos(user, token string) ([]*github.Repository, error) {
 		}
 	}
 	repos = repos[:j]
+	log.Println("Gathered:", len(repos), "Repositories")
 	return repos, err
 }
 
