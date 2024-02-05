@@ -38,6 +38,6 @@ func TestDownloadReleaseAssets(t *testing.T) {
 		t.Error(err)
 	}
 	for i, asset := range assets {
-		t.Log(i, ": ", asset.Url)
+		t.Log(i, ": ", asset)
 	}
 }
