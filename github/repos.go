@@ -15,14 +15,16 @@ import (
 
 func ListAllRepos(user, token string) ([]*github.Repository, error) {
 	if token == "" {
-		log.Println("API token taken from environment")
-		token = EnvToken
+		if EnvToken != "" {
+			log.Println("API token taken from environment")
+			token = EnvToken
+		}
 	}
 	if user == "" {
 		user = EnvUser
 	}
-	client := github.NewTokenClient(nil, token)
 	ctx := context.TODO()
+	client := github.NewTokenClient(ctx, token)
 	repos := make([]*github.Repository, 0)
 	opt := &github.RepositoryListByUserOptions{Type: "public", ListOptions: github.ListOptions{PerPage: 100}}
 	triage, _, err := client.Repositories.ListByUser(ctx, user, opt)
