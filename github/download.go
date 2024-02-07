@@ -149,7 +149,7 @@ func DownloadReleaseAssets(release Release) ([]string, error) {
 			continue
 		}
 		names = append(names, name)
-		time.Sleep(15 * time.Second)
+		time.Sleep(30 * time.Second)
 	}
 	log.Println("Downloaded", names, "assets")
 	return names, nil
