@@ -69,10 +69,10 @@ func ListAllRepos(user, token string) ([]*github.Repository, error) {
 
 func CloneAllRepos(user, token string, mirroring bool) ([]*github.Repository, error) {
 	if token == "" {
-		if (EnvToken != ""){
-		log.Println("API token taken from environment")
-		token = EnvToken
-	}
+		if EnvToken != "" {
+			log.Println("API token taken from environment")
+			token = EnvToken
+		}
 	}
 	if user == "" {
 		user = EnvUser

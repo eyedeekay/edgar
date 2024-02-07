@@ -259,7 +259,6 @@ func main() {
 		err := torrent.CreateTorrent(torrent.CreateTorrentConfig{
 			PieceLength: 256,
 			Name:        file,
-			RootDir:     currentDir,
 			Output:      file + ".torrent",
 			Comment:     "",
 			Announces:   []string{"http://w7tpbzncbcocrqtwwm3nezhnnsw4ozadvi2hmvzdhrqzfxfum7wa.b32.i2p/a"},
