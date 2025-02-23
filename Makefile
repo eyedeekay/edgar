@@ -31,4 +31,4 @@ link:
 	ln -sf . ../goSam
 
 fmt:
-	find . -name '*.go' -exec gofmt -w -s {} \;
+	find . -name '*.go' -exec gofumpt -extra -w -s {} \;

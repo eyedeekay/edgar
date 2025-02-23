@@ -39,11 +39,13 @@ type Asset struct {
 	Published   time.Time `json:"published_at"`
 }
 
-var EnvToken = os.Getenv("GITHUB_TOKEN")
-var EnvUser = os.Getenv("GITHUB_USER")
-var EnvAuthUser = os.Getenv("GITHUB_AUTH_USER")
-var EnvRepo = os.Getenv("GITHUB_REPO")
-var EnvApiEndpoint = os.Getenv("GITHUB_API")
+var (
+	EnvToken       = os.Getenv("GITHUB_TOKEN")
+	EnvUser        = os.Getenv("GITHUB_USER")
+	EnvAuthUser    = os.Getenv("GITHUB_AUTH_USER")
+	EnvRepo        = os.Getenv("GITHUB_REPO")
+	EnvApiEndpoint = os.Getenv("GITHUB_API")
+)
 
 const (
 	RELEASE_LIST_URI    = "/repos/%s/%s/releases"

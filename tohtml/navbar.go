@@ -33,7 +33,7 @@ func NavigationBar(files []string, out string) string {
 			}
 			navbar += "<li><a href=\"" + title + ".html" + "\">" + title + "</a></li>"
 		} else {
-			//if file == "index.html" {
+			// if file == "index.html" {
 			title := strings.ReplaceAll(file, "README", "index")
 			if title == "README" {
 				title = "index"

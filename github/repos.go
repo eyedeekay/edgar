@@ -111,8 +111,10 @@ func CloneAllRepos(user, token string, mirroring bool) ([]*github.Repository, er
 	return allRepos, err
 }
 
-var cloned = 0
-var count = 0
+var (
+	cloned = 0
+	count  = 0
+)
 
 func gitClone(repo *github.Repository, cloneurl bool) (err error) {
 	// check if git is install on the PATH

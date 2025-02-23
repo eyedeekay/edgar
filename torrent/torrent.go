@@ -71,7 +71,7 @@ func CreateTorrent(config CreateTorrentConfig) error {
 
 	var out io.WriteCloser = os.Stdout
 	if config.Output != "" {
-		out, err = os.OpenFile(config.Output, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		out, err = os.OpenFile(config.Output, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o600)
 		if err != nil {
 			return err
 		}

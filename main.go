@@ -39,21 +39,6 @@ var (
 
 var recursive = os.Getenv("EDGAR_RECURSIVE")
 
-func showHelp() {
-	fmt.Println("Edgar(Everything does get a README): Static Site Generator for the Paradoxically Prolific")
-	fmt.Println("=========================================================================================")
-	fmt.Println("")
-	fmt.Println("This is a static site generator which is intended to generate a page for a piece of software from markdown documents stored inside it's VCS.")
-	fmt.Println("It will generate a page from any directory containing markdown files, but it's especially useful for Github Pages with the `.nojekyll` option.")
-	fmt.Println("")
-	fmt.Println("```")
-	//os.Stdout = os.Stderr
-	os.Stderr = os.Stdout
-	flag.Usage()
-	fmt.Println("```")
-	fmt.Println("")
-}
-
 func myDirectory() string {
 	override := os.Getenv("PROJECT_NAME")
 	if override == "" {
@@ -75,13 +60,21 @@ func listAllMarkdownFiles() string {
 	var fileList []string
 
 	if _, err := os.Stat("README.md"); err != nil {
-		err = os.WriteFile("README.md", []byte(tohtml.OpenDirectory()), 0644)
+		od, err := tohtml.OpenDirectory()
+		if err != nil {
+			panic(err)
+		}
+		err = os.WriteFile("README.md", []byte(od), 0o644)
 		if err != nil {
 			panic(err)
 		}
 	}
 	if tohtml.IsOpenDirectory("README.md") {
-		err = os.WriteFile("README.md", []byte(tohtml.OpenDirectory()), 0644)
+		od, err := tohtml.OpenDirectory()
+		if err != nil {
+			panic(err)
+		}
+		err = os.WriteFile("README.md", []byte(od), 0o644)
 		if err != nil {
 			panic(err)
 		}
@@ -90,117 +83,126 @@ func listAllMarkdownFiles() string {
 	fileList = append(fileList, "README.md")
 
 	if recursive != "" {
-		log.Println("walking dir recursively...")
-		err := filepath.Walk(".",
-			func(path string, file os.FileInfo, err error) error {
-				if err != nil {
-					if os.IsNotExist(err) {
-						return nil
-					}
-					if err == filepath.SkipDir {
-						return nil
-					}
-					return err
-				}
-				if !file.IsDir() {
-					log.Println("recursing to path", path)
-					if strings.HasSuffix(path, ".md") {
-						if path != "README.md" {
-							fileList = append(fileList, filepath.Join(path))
-						}
-					} else if strings.HasSuffix(file.Name(), ".html") {
-						mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
-						if _, err := os.Stat(mdExtension); err != nil {
-							fileList = append(fileList, filepath.Join(path))
-						}
-					}
-				} else {
-					if _, err := os.Stat(filepath.Join(path, "index.html")); err == nil {
-						fileList = append(fileList, filepath.Join(path, "index.html"))
-					}
-				}
-				return nil
-			})
-		if err != nil {
-			log.Println(err)
-		}
+		generateNonRecursive(fileList)
 	} else {
-		for _, file := range files {
+		fileList = generateRecursive(files, fileList)
+	}
+	return strings.Join(fileList, ",")
+}
+
+func generateRecursive(files []os.DirEntry, fileList []string) []string {
+	for _, file := range files {
+		if !file.IsDir() {
+			if strings.HasSuffix(file.Name(), ".md") {
+				if file.Name() != "README.md" {
+					fileList = append(fileList, file.Name())
+				}
+			} else if strings.HasSuffix(file.Name(), ".html") {
+				mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+				if _, err := os.Stat(mdExtension); err != nil {
+					fileList = append(fileList, file.Name())
+				}
+			}
+		} else {
+			if _, err := os.Stat(filepath.Join(file.Name(), "index.html")); err == nil {
+				fileList = append(fileList, filepath.Join(file.Name(), "index.html"))
+			}
+		}
+	}
+	if _, err := os.Stat("docs"); err == nil {
+		docs, err := os.ReadDir("docs")
+		if err != nil {
+			log.Fatal(err)
+		}
+		tohtml.OutputCSSTag("docs/style.css")
+		tohtml.OutputShowHiderCSSTag("docs/showhider.css")
+		gitAddCmd := exec.Command("git", "add", "docs/style.css", "docs/showhider.css")
+		if err := gitAddCmd.Run(); err != nil {
+			fmt.Printf("Git Add Error: %s", err)
+			os.Exit(1)
+		}
+		// var fileList []string
+		for _, file := range docs {
 			if !file.IsDir() {
-				if strings.HasSuffix(file.Name(), ".md") {
-					if file.Name() != "README.md" {
-						fileList = append(fileList, file.Name())
+				if strings.HasSuffix(filepath.Join("docs", file.Name()), ".md") {
+					if filepath.Join("docs", file.Name()) != "README.md" {
+						fileList = append(fileList, filepath.Join("docs", file.Name()))
 					}
-				} else if strings.HasSuffix(file.Name(), ".html") {
-					mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+				} else if strings.HasSuffix(filepath.Join("docs", file.Name()), ".html") {
+					mdExtension := strings.ReplaceAll(filepath.Join("docs", file.Name()), ".html", ".md")
 					if _, err := os.Stat(mdExtension); err != nil {
-						fileList = append(fileList, file.Name())
-					}
-				}
-			} else {
-				if _, err := os.Stat(filepath.Join(file.Name(), "index.html")); err == nil {
-					fileList = append(fileList, filepath.Join(file.Name(), "index.html"))
-				}
-			}
-		}
-		if _, err := os.Stat("docs"); err == nil {
-			docs, err := os.ReadDir("docs")
-			if err != nil {
-				log.Fatal(err)
-			}
-			tohtml.OutputCSSTag("docs/style.css")
-			tohtml.OutputShowHiderCSSTag("docs/showhider.css")
-			gitAddCmd := exec.Command("git", "add", "docs/style.css", "docs/showhider.css")
-			if err := gitAddCmd.Run(); err != nil {
-				fmt.Printf("Git Add Error: %s", err)
-				os.Exit(1)
-			}
-			//var fileList []string
-			for _, file := range docs {
-				if !file.IsDir() {
-					if strings.HasSuffix(filepath.Join("docs", file.Name()), ".md") {
-						if filepath.Join("docs", file.Name()) != "README.md" {
-							fileList = append(fileList, filepath.Join("docs", file.Name()))
-						}
-					} else if strings.HasSuffix(filepath.Join("docs", file.Name()), ".html") {
-						mdExtension := strings.ReplaceAll(filepath.Join("docs", file.Name()), ".html", ".md")
-						if _, err := os.Stat(mdExtension); err != nil {
-							fileList = append(fileList, filepath.Join("docs", file.Name()))
-						}
-					}
-				}
-			}
-		}
-		if _, err := os.Stat("doc"); err == nil {
-			docs, err := os.ReadDir("doc")
-			if err != nil {
-				log.Fatal(err)
-			}
-			tohtml.OutputCSSTag("doc/style.css")
-			tohtml.OutputShowHiderCSSTag("doc/showhider.css")
-			gitAddCmd := exec.Command("git", "add", "doc/style.css", "doc/showhider.css")
-			if err := gitAddCmd.Run(); err != nil {
-				fmt.Printf("Git Add Error: %s", err)
-				os.Exit(1)
-			}
-			//var fileList []string
-			for _, file := range docs {
-				if !file.IsDir() {
-					if strings.HasSuffix(filepath.Join("doc", file.Name()), ".md") {
-						if filepath.Join("doc", file.Name()) != "README.md" {
-							fileList = append(fileList, filepath.Join("doc", file.Name()))
-						}
-					} else if strings.HasSuffix(filepath.Join("doc", file.Name()), ".html") {
-						mdExtension := strings.ReplaceAll(filepath.Join("doc", file.Name()), ".html", ".md")
-						if _, err := os.Stat(mdExtension); err != nil {
-							fileList = append(fileList, filepath.Join("doc", file.Name()))
-						}
+						fileList = append(fileList, filepath.Join("docs", file.Name()))
 					}
 				}
 			}
 		}
 	}
-	return strings.Join(fileList, ",")
+	if _, err := os.Stat("doc"); err == nil {
+		docs, err := os.ReadDir("doc")
+		if err != nil {
+			log.Fatal(err)
+		}
+		tohtml.OutputCSSTag("doc/style.css")
+		tohtml.OutputShowHiderCSSTag("doc/showhider.css")
+		gitAddCmd := exec.Command("git", "add", "doc/style.css", "doc/showhider.css")
+		if err := gitAddCmd.Run(); err != nil {
+			fmt.Printf("Git Add Error: %s", err)
+			os.Exit(1)
+		}
+		// var fileList []string
+		for _, file := range docs {
+			if !file.IsDir() {
+				if strings.HasSuffix(filepath.Join("doc", file.Name()), ".md") {
+					if filepath.Join("doc", file.Name()) != "README.md" {
+						fileList = append(fileList, filepath.Join("doc", file.Name()))
+					}
+				} else if strings.HasSuffix(filepath.Join("doc", file.Name()), ".html") {
+					mdExtension := strings.ReplaceAll(filepath.Join("doc", file.Name()), ".html", ".md")
+					if _, err := os.Stat(mdExtension); err != nil {
+						fileList = append(fileList, filepath.Join("doc", file.Name()))
+					}
+				}
+			}
+		}
+	}
+	return fileList
+}
+
+func generateNonRecursive(fileList []string) {
+	log.Println("walking dir recursively...")
+	err := filepath.Walk(".",
+		func(path string, file os.FileInfo, err error) error {
+			if err != nil {
+				if os.IsNotExist(err) {
+					return nil
+				}
+				if err == filepath.SkipDir {
+					return nil
+				}
+				return err
+			}
+			if !file.IsDir() {
+				log.Println("recursing to path", path)
+				if strings.HasSuffix(path, ".md") {
+					if path != "README.md" {
+						fileList = append(fileList, filepath.Join(path))
+					}
+				} else if strings.HasSuffix(file.Name(), ".html") {
+					mdExtension := strings.ReplaceAll(file.Name(), ".html", ".md")
+					if _, err := os.Stat(mdExtension); err != nil {
+						fileList = append(fileList, filepath.Join(path))
+					}
+				}
+			} else {
+				if _, err := os.Stat(filepath.Join(path, "index.html")); err == nil {
+					fileList = append(fileList, filepath.Join(path, "index.html"))
+				}
+			}
+			return nil
+		})
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func authorDefault() string {

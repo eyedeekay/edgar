@@ -1,7 +1,6 @@
 package tohtml
 
 import (
-	"context"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -10,10 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	github "github.com/google/go-github/v45/github"
 	"github.com/russross/blackfriday/v2"
 	"github.com/yosssi/gohtml"
-	"golang.org/x/oauth2"
 )
 
 func OutputHTMLOpen() string {
@@ -52,8 +49,8 @@ func outputHTMLFromMarkdown(filename string) string {
 	}
 
 	html := blackfriday.Run(bytes, blackfriday.WithExtensions(blackfriday.CommonExtensions))
-	//unsafe := github_flavored_markdown.Markdown(bytes)
-	//html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+	// unsafe := github_flavored_markdown.Markdown(bytes)
+	// html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
 	return "<a id=\"returnhome\" href=\"/\">/</a>" + string(html) + "\n"
 }
 
@@ -61,7 +58,7 @@ func OutputHTMLFromMarkdown(filename, title string) string {
 	html := outputHTMLFromMarkdown(filename)
 	title = strings.TrimRight(strings.TrimLeft(title, "'"), "'")
 	if filename == "README.md" {
-		//html = strings.Replace(html, title, "<a href=\".\">"+title+"</a>", 1)
+		// html = strings.Replace(html, title, "<a href=\".\">"+title+"</a>", 1)
 	}
 	return html
 }
@@ -133,13 +130,13 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 	output += OutputBodyClose()
 	output += OutputHTMLClose()
 	final := gohtml.Format(output)
-	err := ioutil.WriteFile(".nojekyll", []byte{}, 0644)
+	err := ioutil.WriteFile(".nojekyll", []byte{}, 0o644)
 	if err != nil {
 		fmt.Printf("No Jekyll Error \n %s", err)
 		os.Exit(1)
 	}
 	if out != "" && out != "-" {
-		if err := ioutil.WriteFile(out, []byte(final), 0644); err != nil {
+		if err := ioutil.WriteFile(out, []byte(final), 0o644); err != nil {
 			fmt.Printf("Output Error %s", err)
 			os.Exit(1)
 		}
@@ -158,35 +155,4 @@ func RunGenerator(file, out, filename, title, author, css, script, donate, donat
 	} else {
 		fmt.Println(final)
 	}
-}
-
-func enableGithubPage() error {
-	token := os.Getenv("GITHUB_TOKEN")
-	if len(token) == 0 {
-		return fmt.Errorf("GITHUB_TOKEN not set")
-	}
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token},
-	)
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
-	repoName := findGithubRepoName()
-	if repoName == "" {
-		return fmt.Errorf("could not find github repo name")
-	}
-	branch := getCurrentBranch()
-	path := "/"
-	_, _, err := client.Repositories.EnablePages(ctx, FindGithubUsername(), repoName, &github.Pages{
-		Source: &github.PagesSource{
-			Branch: github.String(branch),
-			Path:   github.String(path),
-		},
-		Public: github.Bool(true),
-	})
-	if err != nil {
-		return fmt.Errorf("could not enable github pages: %v", err)
-	}
-
-	return nil
 }

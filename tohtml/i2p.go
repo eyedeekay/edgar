@@ -25,7 +25,7 @@ func I2PLink(dir string) string {
 		fmt.Printf("Error reading logo: %s", err)
 		return ""
 	}
-	if err := ioutil.WriteFile(i2plogopath, bytes, 0644); err != nil {
+	if err := ioutil.WriteFile(i2plogopath, bytes, 0o644); err != nil {
 		fmt.Printf("Error writing logo: %s", err)
 		return ""
 	}
