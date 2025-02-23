@@ -94,6 +94,12 @@ func listAllMarkdownFiles() string {
 		err := filepath.Walk(".",
 			func(path string, file os.FileInfo, err error) error {
 				if err != nil {
+					if os.IsNotExist(err) {
+						return nil
+					}
+					if err == filepath.SkipDir {
+						return nil
+					}
 					return err
 				}
 				if !file.IsDir() {
