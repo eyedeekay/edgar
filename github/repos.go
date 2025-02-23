@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"sync/atomic"
 	"time"
 
 	"github.com/go-git/go-git/v5" // with go modules enabled (GO111MODULE=on or outside GOPATH)
@@ -28,15 +29,18 @@ func ListAllRepos(user, token string) ([]*github.Repository, error) {
 	repos := make([]*github.Repository, 0)
 	opt := &github.RepositoryListByUserOptions{Type: "public", ListOptions: github.ListOptions{PerPage: 100}}
 	triage, _, err := client.Repositories.ListByUser(ctx, user, opt)
+	if err != nil {
+		return nil, err
+	}
 	page := 0
 	count := -1
 	timeout := 0
 	for len(triage) > 0 {
 		log.Println("Gathered:", len(repos), "Repositories", page)
 		opt := &github.RepositoryListByUserOptions{Type: "public", ListOptions: github.ListOptions{PerPage: 100, Page: page}}
-		triage, _, err := client.Repositories.ListByUser(ctx, user, opt)
-		if err != nil {
-			return nil, err
+		triage, resp, err := client.Repositories.ListByUser(ctx, user, opt)
+		if len(triage) == 0 || resp.NextPage == 0 || err != nil {
+			break
 		}
 		for _, repo := range triage {
 			if repo.GetHasPages() {
@@ -89,10 +93,10 @@ func CloneAllRepos(user, token string, mirroring bool) ([]*github.Repository, er
 	if cloneerr != nil {
 		cloneurl = true
 	}
-	cloned = 0
-	count = 0
+	cloned.Store(0)
+	count.Store(0)
 	for _, repo := range allRepos {
-		for count > 5 {
+		for count.Load() > 5 {
 			// don't clone more than 5 at a time.
 			// After all the small ones are cloned the last queue will pretty much only be really big ones.
 			log.Println("Sleeping until the queue opens up")
@@ -100,9 +104,9 @@ func CloneAllRepos(user, token string, mirroring bool) ([]*github.Repository, er
 		}
 		go clone(repo, cloneurl, mirroring)
 	}
-	msg := "Cloned: " + strconv.Itoa(cloned) + " Repositories"
-	for cloned < len(allRepos) {
-		tmp := "Cloned: " + strconv.Itoa(cloned) + " Repositories"
+	msg := "Cloned: " + strconv.Itoa(int(cloned.Load())) + " Repositories"
+	for cloned.Load() < int32(len(allRepos)) {
+		tmp := "Cloned: " + strconv.Itoa(int(cloned.Load())) + " Repositories"
 		if tmp != msg {
 			msg = tmp
 			log.Println("\n\t", msg)
@@ -112,8 +116,8 @@ func CloneAllRepos(user, token string, mirroring bool) ([]*github.Repository, er
 }
 
 var (
-	cloned = 0
-	count  = 0
+	cloned atomic.Int32
+	count  atomic.Int32
 )
 
 func gitClone(repo *github.Repository, cloneurl bool) (err error) {
@@ -164,7 +168,7 @@ func gitClone(repo *github.Repository, cloneurl bool) (err error) {
 }
 
 func clone(repo *github.Repository, cloneurl, mirroring bool) {
-	count++
+	count.Add(1)
 	if cloneurl {
 		log.Println("Cloning", repo.GetName(), *repo.CloneURL)
 		err := gitClone(repo, cloneurl)
@@ -190,8 +194,8 @@ func clone(repo *github.Repository, cloneurl, mirroring bool) {
 			}
 		}
 	}
-	cloned++
-	count--
+	cloned.Add(1)
+	count.Add(-1)
 }
 
 func Mirror(user, token string) error {
